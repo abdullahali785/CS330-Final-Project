@@ -1,3 +1,4 @@
+// Landing page. Has a log in option. Takes to OAuth
 function Landing() {
   return (
     <div>
