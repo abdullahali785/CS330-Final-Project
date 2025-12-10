@@ -20,6 +20,7 @@ def home():
 
 @main.route('/forms', methods=['GET'])
 def forms():
+    #Get all forms from the database
     forms = db.session.query(Forms).all()
     forms_data = [
         {column.name: getattr(form, column.name) for column in form.__table__.columns}
@@ -29,9 +30,12 @@ def forms():
 
 @main.route('/submitForm', methods=['POST'])
 def submit_form():
+    # Handle form submission
+    #Accept form data via POST request
     if not request.method == 'POST':
         return json.dumps({"error": "Invalid request method"}), 400
     
+    #Extract form data
     userId = request.form["userId"]
     origin = request.form["origin"]
     destination = request.form["destination"]
@@ -39,9 +43,11 @@ def submit_form():
     time = request.form["time"]
     seatsAvailable = request.form["seatsAvailable"]
     notes = request.form["notes"]
-    print(f"Received form submission: {userId}, {origin}, {destination}, {date}, {time}, {seatsAvailable}, {notes}")
+    
+    #Create new form entry
     new_form = Forms(
         id=str(uuid.uuid4()),
+        creatorId=userId,
         origin=origin,
         destination=destination,
         date=date,
@@ -49,6 +55,7 @@ def submit_form():
         seatsAvailable=int(seatsAvailable),
         notes=notes
     )
+    # Save to database
     db.session.add(new_form)
     db.session.commit()
     flash("Form submitted successfully", "success")
@@ -58,7 +65,16 @@ def submit_form():
 
 @main.route('/allrequests', methods=['GET'])
 def all_requests():
-    requests = db.session.query(Requests).all()
+    creatorId = request.form["creatorId"] if "creatorId" in request.form else None
+    requestorId = request.form["requestorId"] if "requestorId" in request.form else None
+    #Get all requests for forms created by the given creatorId or requestorId else return error
+    if requestorId is None and creatorId is not None:
+        requests = db.session.query(Requests).join(Forms, Requests.formId == Forms.id).filter(Forms.creatorId == creatorId).all()
+    elif creatorId is None and requestorId is not None:
+        requests = db.session.query(Requests).filter(Requests.requestorId == requestorId).all()
+    elif creatorId == None and requestorId == None or creatorId != None and requestorId != None:
+        return json.dumps({"error": "Provide either creatorId or requestorId"}), 400
+   
     requests_data = [
         {column.name: getattr(req, column.name) for column in req.__table__.columns}
         for req in requests
@@ -67,18 +83,23 @@ def all_requests():
 
 @main.route('/requestToJoin', methods=['POST'])
 def requests():
+    # Handle request to join a form
+    #Accept request data via POST request
     if not request.method == 'POST':
         return json.dumps({"error": "Invalid request method"}), 400
     
+    #Extract request data
     requestorId = request.form["requestorId"]
     formId = request.form["formId"]
-    print(f"Received join request: {requestorId}, {formId}")
+    
+    #Create new request entry
     new_request = Requests(
         id=str(uuid.uuid4()),
         requestorId=requestorId,
         formId=formId,
         status="pending"
     )
+    # Save to database
     db.session.add(new_request)
     db.session.commit()
     flash("Request to join submitted successfully", "success")
@@ -87,13 +108,46 @@ def requests():
 
 @main.route('/acceptRequest', methods=['POST'])
 def accept_request():
+    # Handle acceptance of a join request
+    #Accept request data via POST request
+    if not request.method == 'POST':
+        return json.dumps({"error": "Invalid request method"}), 400
+    
+
+    #Extract request data
     request_id = request.form['requestId']
+    creatorId = request.form['creatorId']
     join_request = db.session.query(Requests).filter_by(id=request_id).first()
+    
     form = db.session.query(Forms).filter_by(id=join_request.formId).first()
+    # Check if the request exists
     if not join_request:
         return json.dumps({"error": "Request not found"}), 404
+
+    # Verify that the form belongs to the creator
+    
+    if form.creatorId != creatorId:
+        return json.dumps({"error": "Unauthorized action"}), 403
+     
     
     join_request.status = "approved"
     form.seatsAvailable -= 1
     db.session.commit()
     return json.dumps({"message": "Request approved successfully"}), 200
+
+@main.route('/denyRequest', methods=['POST'])
+def deny_request():
+    request_id = request.form['requestId']
+    join_request = db.session.query(Requests).filter_by(id=request_id).first()
+    form = db.session.query(Forms).filter_by(id=join_request.formId).first()
+    # Verify that the form belongs to the creator
+    if form.creatorId != request.form['creatorId']:
+        return json.dumps({"error": "Unauthorized action"}), 403
+    # Check if the request exists
+    if not join_request:
+        return json.dumps({"error": "Request not found"}), 404
+    
+    # Deny the request
+    join_request.status = "denied"
+    db.session.commit()
+    return json.dumps({"message": "Request denied successfully"}), 200
