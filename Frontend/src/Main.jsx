@@ -6,11 +6,11 @@ import Info from './Components/Info.jsx'
 import Home from './Components/Home.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <>
-      <Landing />
-      <Info />
-      <Home />
-    </>
-  </StrictMode>,
+    <StrictMode>
+        <>
+        <Home />
+        <Landing />
+        <Info />
+        </>
+    </StrictMode>,
 )
