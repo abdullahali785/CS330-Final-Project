@@ -3,7 +3,8 @@ import tourists from "../Assets/Tourists.jpg"
 
 function Landing() {
     return (
-    <div className="container m-5"> 
+    <div > 
+    <div className="container m-5" style={{backgroundImage: `url(${tourists})`}}> 
         <div className="row p-4 pb-5 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg"> 
             <div className="col-lg-7 p-3 p-lg-5 pt-lg-3"> 
                 <h1 className="display-4 fw-bold lh-1 text-body-emphasis">Welcome to RidePal!</h1> 
@@ -19,6 +20,7 @@ function Landing() {
                 <img className="rounded-lg-3" src={tourists} alt="Car share image" width="720" /> 
             </div> 
         </div> 
+    </div>
     </div>
     )
 }
