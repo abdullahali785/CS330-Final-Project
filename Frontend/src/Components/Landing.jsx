@@ -1,5 +1,5 @@
 // Landing page. Has a log in option. Takes to OAuth
-import background from "../Assets/Background.png"
+import tourists from "../Assets/Tourists.jpg"
 
 function Landing() {
     return (
@@ -16,7 +16,7 @@ function Landing() {
                 </div>
             </div> 
             <div className="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg"> 
-                <img className="rounded-lg-3" src={background} alt="Car share image" width="720" /> 
+                <img className="rounded-lg-3" src={tourists} alt="Car share image" width="720" /> 
             </div> 
         </div> 
     </div>
