@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Header from "./Header";
 
-export default function Trip({ onSubmit }) {
+export default function Add({ onSubmit }) {
     const [form, setForm] = useState({
         origin: "",
         destination: "",

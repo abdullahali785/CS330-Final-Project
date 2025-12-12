@@ -33,6 +33,7 @@ export default function Home() {
                             
                             <div class="d-flex justify-content-center align-items-center"> 
                                 <div class="btn-group"> 
+                                    {/* This button will send tripId and requesterId when clicked */}
                                     <button type="button" class="btn btn-success fw-bold">Request</button> 
                                 </div> 
                             </div> 
