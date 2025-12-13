@@ -1,40 +1,74 @@
 // Main page with all the cards 
+import { useState } from "react";
 import car from "../Assets/Car.png";
 import Header from "./Header";
 
 export default function Home() {
-    const count = 3;
+    // const [trips, setTrips] = useState([]);
+    // 
+    // useEffect(() => {
+    //     fetch("http://localhost:8080/api/forms") // API URL to get all trips
+    //     .then(res => res.json())
+    //     .then(data => setTrips(data))
+    //     .catch(err => console.error(err));
+    // }, []);
+
+    const [trips, setTrips] = useState([
+    {
+        id: 1,
+        origin: "Decorah, IA",
+        destination: "Rochester, MN",
+        date: "12/19/25",
+        time: "17:00",
+        notes: "No pets allowed!",
+        seats: 2,
+        image: "Car.png"
+    },
+    {
+        id: 2,
+        origin: "Decorah, IA",
+        destination: "Minneapolis, MN",
+        date: "12/13/25",
+        time: "09:30",
+        notes: "None",
+        seats: 3,
+        image: "Car.png"
+    }
+    ]);
 
     return (
     <div>
     <Header />
-    <div class="album py-5"> 
-        <div class="container"> 
+    <div className="album py-5"> 
+        <div className="container"> 
             {/* Row Start */}
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
                 {/* Card Start */}
-                {Array.from({ length: count }).map((_, i) => (
-                <div class="col"> 
-                    <div class="card shadow-sm"> 
-                        <img src={car} class="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
-                        <div class="card-body text-center"> 
-                            <p class="card-text fw-bold">
-                                Decorah, IA
-                                &nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg>&nbsp;
-                                Rochester, MN
+                {trips.map(trip => (
+                <div className="col"> 
+                    <div className="card shadow-sm"> 
+                        <img src={car} className="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
+                        <div className="card-body text-center"> 
+                            <p className="card-text fw-bold">
+                                {trip.origin}
+                                &nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-right" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg>&nbsp;
+                                {trip.destination}
                             </p>
 
-                            <p class="card-text">Notes: No pets allowed!</p> 
+                            <div className="d-flex justify-content-center gap-4">
+                                <p className="card-text md-0">Seats: {trip.seats}</p>
+                                {trip.notes && trip.notes !== "None" ? (<p className="card-text mb-0">Notes: {trip.notes}</p>) : (<p className="card-text mb-0">No special requirements</p>)}
+                            </div>
 
-                            <div class="d-flex justify-content-center align-items-center"> 
-                                <p class="text-body-secondary fw-bold">12th December, 2025&nbsp;</p> 
-                                <p class="text-body-secondary fw-bold">at 5:00 PM</p> 
+                            <div className="d-flex justify-content-center align-items-center"> 
+                                <p className="text-body-secondary fw-bold">{formatDate(trip.date)}&nbsp;</p> 
+                                <p className="text-body-secondary fw-bold">at {trip.time}</p> 
                             </div>  
                             
-                            <div class="d-flex justify-content-center align-items-center"> 
-                                <div class="btn-group"> 
-                                    {/* This button will send tripId and requesterId when clicked */}
-                                    <button type="button" class="btn btn-success fw-bold">Request</button> 
+                            <div className="d-flex justify-content-center align-items-center"> 
+                                <div className="btn-group"> 
+                                    {/* This button will send trip Id and requesterId when clicked */}
+                                    <a href={sendData(trip)}><button type="button" className="btn btn-success fw-bold">Request</button></a>
                                 </div> 
                             </div> 
                         </div> 
@@ -48,4 +82,40 @@ export default function Home() {
     </div>
     </div>
     )
+}
+
+// When request is clicked, sends user and trip IDs to API
+function sendData(trip) {
+    const requesterId = "";
+    const data = {
+        requesterId,
+        tripId: trip.id
+    };
+    console.log("Sending request:", data);
+
+    // POST
+    // fetch("http://localhost:8080/api/requests", {
+    //     method: "POST",
+    //     headers: {
+    //     "Content-Type": "application/json"
+    //     },
+    //     body: JSON.stringify(data)
+    // });
+}
+
+function formatDate(dateStr) {
+    const [month, day, year] = dateStr.split("/").map(Number);
+
+    const fullYear = year < 100 ? 2000 + year : year;
+    const date = new Date(fullYear, month - 1, day);
+
+    const dayNum = date.getDate();
+    const suffix =
+        dayNum % 10 === 1 && dayNum !== 11 ? "st" :
+        dayNum % 10 === 2 && dayNum !== 12 ? "nd" :
+        dayNum % 10 === 3 && dayNum !== 13 ? "rd" :
+        "th";
+
+    const monthName = date.toLocaleString("en-US", { month: "long" });
+    return `${dayNum}${suffix} ${monthName}, ${date.getFullYear()}`;
 }

@@ -5,7 +5,7 @@ export default function Landing() {
     return (
     <div style={{backgroundImage: `url(${tourists})`, minHeight: "100vh", width: "100%", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", display: "flex", alignItems: "center", justifyContent: "center"}}>
     <div className="container">
-        <div className="row p-4 pb-5 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg bg-white bg-opacity-75">
+        <div className="row p-5 pe-lg-0 pt-lg-5 align-items-center rounded-3 shadow-lg " style={{ transform: "translateY(-100px)" }}>
             <div className="col-lg-7 p-3 p-lg-5 pt-lg-3">
                 <h1 className="display-4 fw-bold lh-1 text-body-emphasis">Welcome to RidePal!</h1>
                 <p className="py-2 lead">
@@ -14,7 +14,7 @@ export default function Landing() {
                     Please sign in to explore functionality.
                 </p>
                 <div className="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                    <button type="button" className="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Sign In</button>
+                    <a href=""><button type="button" className="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Sign In</button></a>
                 </div>
             </div>
         </div>
