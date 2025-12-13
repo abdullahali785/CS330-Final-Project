@@ -1,7 +1,14 @@
 // Landing page. Has a log in option. Takes to OAuth
+import { useNavigate } from "react-router-dom";
 import tourists from "../Assets/Tourists.jpg"
 
 export default function Landing() {
+    const navigate = useNavigate();
+    const handleSignIn = () => {
+        // window.location.href = "http://localhost:5173/home";
+        navigate("/home")
+    };
+
     return (
     <div style={{backgroundImage: `url(${tourists})`, minHeight: "100vh", width: "100%", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", display: "flex", alignItems: "center", justifyContent: "center"}}>
     <div className="container">
@@ -14,7 +21,7 @@ export default function Landing() {
                     Please sign in to explore functionality.
                 </p>
                 <div className="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                    <a href=""><button type="button" className="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Sign In</button></a>
+                    <button type="button" onClick={handleSignIn} className="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Sign In</button>
                 </div>
             </div>
         </div>

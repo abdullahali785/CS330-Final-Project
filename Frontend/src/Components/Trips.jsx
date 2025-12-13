@@ -8,9 +8,9 @@ export default function Trips() {
     return (
     <>
     { hasCar ? 
-        <div>User has a car. If he has added a trip, show reqs on that trip for him to approve or deny. If he has not added any trips, show no trips to show.</div>
+        <p>User has a car. If he has added a trip, show reqs on that trip for him to approve or deny. If he has not added any trips, show no trips to show.</p>
         :
-        <div>User does not have a car. Show him his sent reqs with their status. If he has no reqs, show no reqs.</div>
+        <p>User does not have a car. Show him his sent reqs with their status. If he has no reqs, show no reqs.</p>
     }
     </>
     )

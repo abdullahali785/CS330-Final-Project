@@ -21,8 +21,7 @@ export default function Home() {
         date: "12/19/25",
         time: "17:00",
         notes: "No pets allowed!",
-        seats: 2,
-        image: "Car.png"
+        seats: 2
     },
     {
         id: 2,
@@ -31,10 +30,33 @@ export default function Home() {
         date: "12/13/25",
         time: "09:30",
         notes: "None",
-        seats: 3,
-        image: "Car.png"
+        seats: 3
+    }, 
+    {
+        id: 3,
+        origin: "Decorah, IA",
+        destination: "New York, NY",
+        date: "11/03/25",
+        time: "19:30",
+        notes: "",
+        seats: 5
     }
     ]);
+
+    const sendData = (trip) => {
+        const requesterId = 1; // This will change later to actual requester ID
+        const data = {
+            requesterId,
+            tripId: trip.id
+        };
+        console.log("Sending request:", data);
+
+        // fetch("http://localhost:8080/api/requests", {
+        //   method: "POST",
+        //   headers: { "Content-Type": "application/json" },
+        //   body: JSON.stringify(data)
+        // });
+    };
 
     return (
     <div>
@@ -68,7 +90,7 @@ export default function Home() {
                             <div className="d-flex justify-content-center align-items-center"> 
                                 <div className="btn-group"> 
                                     {/* This button will send trip Id and requesterId when clicked */}
-                                    <a href={sendData(trip)}><button type="button" className="btn btn-success fw-bold">Request</button></a>
+                                    <button type="button" onClick={() => sendData(trip)} className="btn btn-success fw-bold">Request</button>
                                 </div> 
                             </div> 
                         </div> 
@@ -82,25 +104,6 @@ export default function Home() {
     </div>
     </div>
     )
-}
-
-// When request is clicked, sends user and trip IDs to API
-function sendData(trip) {
-    const requesterId = "";
-    const data = {
-        requesterId,
-        tripId: trip.id
-    };
-    console.log("Sending request:", data);
-
-    // POST
-    // fetch("http://localhost:8080/api/requests", {
-    //     method: "POST",
-    //     headers: {
-    //     "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify(data)
-    // });
 }
 
 function formatDate(dateStr) {

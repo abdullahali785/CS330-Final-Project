@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Header from "./Header";
 
-export default function Add({ onSubmit }) {
+export default function Add() {
     const [form, setForm] = useState({
         origin: "",
         destination: "",
@@ -42,36 +42,50 @@ export default function Add({ onSubmit }) {
     const errors = validate();
     const isValid = Object.keys(errors).length === 0;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitAttempted(true);
 
-        if (!isValid) {
-        // focus first invalid field optionally
-        const firstInvalid = Object.keys(errors)[0];
-        const el = document.querySelector(`[name="${firstInvalid}"]`);
-        if (el) el.focus();
-        return;
-        }
+        if (!isValid) return;
 
-        // Build the trip object
         const trip = {
-        origin: form.origin.trim(),
-        destination: form.destination.trim(),
-        departureDate: form.departure_date,
-        departureTime: form.departure_time,
-        seats: form.seats,
-        notes: form.notes.trim() || null,
+            origin: form.origin.trim(),
+            destination: form.destination.trim(),
+            departureDate: form.departure_date,
+            departureTime: form.departure_time,
+            seats: form.seats,
+            notes: form.notes.trim() || null,
+            creatorId: 1 // This will change later to actual requester ID
         };
 
-        // replace this with an API call or prop callback
-        if (onSubmit) onSubmit(trip);
-        else console.log("Trip submitted:", trip);
+        try {
+            const res = await fetch("http://localhost:8080/api/forms", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(trip)
+            });
 
-        // Optionally reset form
-        // setForm({ origin: "", destination: "", departure_date: "", departure_time: "", seats: 1, notes: "" });
-        setSubmitAttempted(false);
-        setTouched({});
+            if (!res.ok) {
+                throw new Error("Failed to create trip");
+            }
+            console.log("Trip created:", trip);
+
+            // Reset form
+            setForm({
+                origin: "",
+                destination: "",
+                departure_date: "",
+                departure_time: "",
+                seats: 1,
+                notes: ""
+            });
+            setSubmitAttempted(false);
+            setTouched({});
+
+        } catch (err) {
+            console.error(err);
+            alert("Could not create trip. Please try again.");
+        }
     };
 
     const showInvalid = (field) =>
