@@ -6,7 +6,7 @@ export default function Landing() {
     const navigate = useNavigate();
     const handleSignIn = () => {
         // window.location.href = "http://localhost:5173/home";
-        navigate("/home")
+        navigate("/info")
     };
 
     return (
