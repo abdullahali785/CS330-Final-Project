@@ -88,8 +88,7 @@ export default function Home() {
                             </div>  
                             
                             <div className="d-flex justify-content-center align-items-center"> 
-                                <div className="btn-group"> 
-                                    {/* This button will send trip Id and requesterId when clicked */}
+                                <div className="btn-group">
                                     <button type="button" onClick={() => sendData(trip)} className="btn btn-success fw-bold">Request</button>
                                 </div> 
                             </div> 

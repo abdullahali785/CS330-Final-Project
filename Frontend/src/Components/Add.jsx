@@ -92,8 +92,9 @@ export default function Add() {
         Boolean((touched[field] || submitAttempted) && errors[field]);
 
     return (
+    <div>
+    <Header />
     <div className="container my-4">
-        <Header />
         <form className="px-3" noValidate onSubmit={handleSubmit}>
             <div className="row g-3">
                 <div className="col-md-6">
@@ -191,10 +192,11 @@ export default function Add() {
                 </div>
 
                 <div className="col-12 d-flex justify-content-end">
-                    <button type="submit" className="btn btn-primary">Create Trip</button>
+                    <button type="submit" className="btn btn-primary fw-bold">Create Trip</button>
                 </div>
             </div>
         </form>
+    </div>
     </div>
   );
 }
