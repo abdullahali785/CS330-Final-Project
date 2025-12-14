@@ -1,11 +1,27 @@
 // Takes user info (do you have a car or no etc)
-// One view for a returing user, one for a new user
 import { useState } from "react";
 import Header from "./Header.jsx";
 import car from "../Assets/Car.png";
 
 export default function Trips() {
-    let hasCar = truex;
+    const BASE_URL = "http://localhost:8080/api/v1/";
+    // const [trips, setTrips] = useState([]);
+    // useEffect(() => {
+    //     fetch(`${BASE_URL}allrequests`) // API URL to get all trips
+    //     .then(res => res.json())
+    //     .then(data => setTrips(data))
+    //     .catch(err => console.error(err));
+    // }, []);
+
+    // Check what API returns and add here
+    // {
+    //     id: 1,
+    //     requestorId: 2,
+    //     formId: 3,
+    //     status: "Pending"
+    // },
+
+    let hasCar = true;
     const [trips, setTrips] = useState([
         {
             id: 1,
@@ -14,7 +30,8 @@ export default function Trips() {
             date: "12/19/25",
             time: "17:00",
             requester: "Talha",
-            status: "Waiting"
+            status: "Waiting",
+            contact: ""
         },
         {
             id: 2,
@@ -23,7 +40,8 @@ export default function Trips() {
             date: "12/13/25",
             time: "09:30",
             requester: "Abdullah",
-            status: "Denied"
+            status: "Denied",
+            contact: ""
         }, 
         {
             id: 3,
@@ -36,6 +54,34 @@ export default function Trips() {
             contact: "abdullah@luther.edu"
         }
     ]);
+
+    const approveReq = (trip) => {
+        const creatorId = 1; // Get creatorId from 1) OAuth information 2) Landing or Info page 
+        const data = {
+            tripId: trip.id,
+            creatorId
+        };
+
+        fetch(`${BASE_URL}acceptRequest`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+    };
+
+    const denyReq = (trip) => {
+        const creatorId = 1; // Get creatorId from 1) OAuth information 2) Landing or Info page 
+        const data = {
+            tripId: trip.id,
+            creatorId
+        };
+
+        fetch(`${BASE_URL}denyRequest`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+    };
 
     return (
     // Car Owners' View
@@ -69,8 +115,8 @@ export default function Trips() {
                                 
                                 <div className="d-flex justify-content-center align-items-center"> 
                                     <div className="btn-group gap-3"> 
-                                        <button type="button" className="btn btn-success rounded-3 fw-bold">Approve</button>
-                                        <button type="button" className="btn btn-danger rounded-3 fw-bold">Deny</button>
+                                        <button type="button" onClick={() => approveReq(trip)} className="btn btn-success rounded-3 fw-bold">Approve</button>
+                                        <button type="button" onClick={() => denyReq(trip)} className="btn btn-danger rounded-3 fw-bold">Deny</button>
                                     </div> 
                                 </div>
                             </>) : (<>
