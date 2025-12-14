@@ -44,6 +44,7 @@ export default function Home() {
     ]);
 
     const sendData = (trip) => {
+        // We get creater id from db
         const requesterId = 1; // This will change later to actual requester ID
         const data = {
             requesterId,

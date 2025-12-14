@@ -5,9 +5,9 @@ export default function Add() {
     const [form, setForm] = useState({
         origin: "",
         destination: "",
-        departure_date: "",
-        departure_time: "",
-        seats: 1,
+        date: "",
+        time: "",
+        seatsAvaiable: 1,
         notes: "",
     });
 
@@ -30,11 +30,11 @@ export default function Add() {
         const errors = {};
         if (!form.origin.trim()) errors.origin = "Origin is required.";
         if (!form.destination.trim()) errors.destination = "Destination is required.";
-        if (!form.departure_date) errors.departure_date = "Departure date is required.";
-        if (!form.departure_time) errors.departure_time = "Departure time is required.";
-        if (form.seats === "" || form.seats == null) errors.seats = "Number of people is required.";
-        else if (Number.isNaN(form.seats) || form.seats < 1 || form.seats > 7) {
-        errors.seats = "Must be a number between 1 and 7.";
+        if (!form.date) errors.date = "Departure date is required.";
+        if (!form.time) errors.time = "Departure time is required.";
+        if (form.seatsAvaiable === "" || form.seatsAvaiable == null) errors.seatsAvaiable = "Number of people is required.";
+        else if (Number.isNaN(form.seatsAvaiable) || form.seatsAvaiable < 1 || form.seatsAvaiable > 7) {
+        errors.seatsAvaiable = "Must be a number between 1 and 7.";
         }
         return errors;
     };
@@ -51,9 +51,9 @@ export default function Add() {
         const trip = {
             origin: form.origin.trim(),
             destination: form.destination.trim(),
-            departureDate: form.departure_date,
-            departureTime: form.departure_time,
-            seats: form.seats,
+            date: form.date,
+            time: form.time,
+            seatsAvaiable: form.seatsAvaiable,
             notes: form.notes.trim() || null,
             creatorId: 1 // This will change later to actual requester ID
         };
@@ -74,9 +74,9 @@ export default function Add() {
             setForm({
                 origin: "",
                 destination: "",
-                departure_date: "",
-                departure_time: "",
-                seats: 1,
+                date: "",
+                time: "",
+                seatsAvaiable: 1,
                 notes: ""
             });
             setSubmitAttempted(false);
@@ -87,9 +87,7 @@ export default function Add() {
             alert("Could not create trip. Please try again.");
         }
     };
-
-    const showInvalid = (field) =>
-        Boolean((touched[field] || submitAttempted) && errors[field]);
+    const showInvalid = (field) => Boolean((touched[field] || submitAttempted) && errors[field]);
 
     return (
     <div>
@@ -130,43 +128,43 @@ export default function Add() {
                 </div>
 
                 <div className="col-md-4">
-                    <label htmlFor="departure_date" className="form-label fw-bold">Departure date</label>
+                    <label htmlFor="date" className="form-label fw-bold">Departure Date</label>
                     <input
-                        id="departure_date"
-                        name="departure_date"
+                        id="date"
+                        name="date"
                         type="date"
-                        className={`form-control ${showInvalid("departure_date") ? "is-invalid" : ""}`}
-                        value={form.departure_date}
+                        className={`form-control ${showInvalid("date") ? "is-invalid" : ""}`}
+                        value={form.date}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         required
                     />
-                    <div className="invalid-feedback">{errors.departure_date}</div>
+                    <div className="invalid-feedback">{errors.date}</div>
                 </div>
 
                 <div className="col-md-4">
-                    <label htmlFor="departure_time" className="form-label fw-bold">Departure time</label>
+                    <label htmlFor="time" className="form-label fw-bold">Departure Time</label>
                     <input
-                        id="departure_time"
-                        name="departure_time"
+                        id="time"
+                        name="time"
                         type="time"
-                        className={`form-control ${showInvalid("departure_time") ? "is-invalid" : ""}`}
-                        value={form.departure_time}
+                        className={`form-control ${showInvalid("time") ? "is-invalid" : ""}`}
+                        value={form.time}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         required
                     />
-                    <div className="invalid-feedback">{errors.departure_time}</div>
+                    <div className="invalid-feedback">{errors.time}</div>
                 </div>
 
                 <div className="col-md-4">
-                    <label htmlFor="seats" className="form-label fw-bold">Number of people that can come</label>
+                    <label htmlFor="seatsAvaiable" className="form-label fw-bold">Number of people that can come</label>
                     <input
-                        id="seats"
-                        name="seats"
+                        id="seatsAvaiable"
+                        name="seatsAvaiable"
                         type="number"
-                        className={`form-control ${showInvalid("seats") ? "is-invalid" : ""}`}
-                        value={form.seats}
+                        className={`form-control ${showInvalid("seatsAvaiable") ? "is-invalid" : ""}`}
+                        value={form.seatsAvaiable}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         min={1}
@@ -174,7 +172,7 @@ export default function Add() {
                         required
                         aria-describedby="seatsHelp"
                     />
-                    <div className="invalid-feedback">{errors.seats}</div>
+                    <div className="invalid-feedback">{errors.seatsAvaiable}</div>
                     <div id="seatsHelp" className="form-text">Enter a number between 1 and 7.</div>
                 </div>
 
