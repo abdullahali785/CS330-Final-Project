@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import Header from "./Header";
 
 export default function Add() {
+    const BASE_URL = "http://localhost:8080/api/v1/";
     const [form, setForm] = useState({
+        userId: 1,
         origin: "",
         destination: "",
         date: "",
@@ -49,17 +51,17 @@ export default function Add() {
         if (!isValid) return;
 
         const trip = {
+            userId: 1, // This will change later to actual car owner's ID
             origin: form.origin.trim(),
             destination: form.destination.trim(),
             date: form.date,
             time: form.time,
             seatsAvaiable: form.seatsAvaiable,
-            notes: form.notes.trim() || null,
-            creatorId: 1 // This will change later to actual requester ID
+            notes: form.notes.trim() || null
         };
 
         try {
-            const res = await fetch("http://localhost:8080/api/forms", {
+            const res = await fetch(`${BASE_URL}submitForm`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(trip)

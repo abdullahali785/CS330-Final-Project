@@ -4,55 +4,58 @@ import car from "../Assets/Car.png";
 import Header from "./Header";
 
 export default function Home() {
+    const BASE_URL = "http://localhost:8080/api/v1/";
     // const [trips, setTrips] = useState([]);
-    // 
+    
     // useEffect(() => {
-    //     fetch("http://localhost:8080/api/forms") // API URL to get all trips
+    //     fetch(`${BASE_URL}forms`) // API URL to get all trips
     //     .then(res => res.json())
     //     .then(data => setTrips(data))
     //     .catch(err => console.error(err));
     // }, []);
 
     const [trips, setTrips] = useState([
-    {
+    { // All of this comes from DB
         id: 1,
+        creatorId: 1, 
         origin: "Decorah, IA",
         destination: "Rochester, MN",
-        date: "12/19/25",
+        date: "12/01/25",
         time: "17:00",
-        notes: "No pets allowed!",
-        seats: 2
+        seatsAvaiable: 1,
+        notes: "No pets allowed"
     },
     {
         id: 2,
+        creatorId: 2,
         origin: "Decorah, IA",
-        destination: "Minneapolis, MN",
-        date: "12/13/25",
-        time: "09:30",
-        notes: "None",
-        seats: 3
+        destination: "New York, NY",
+        date: "12/29/25",
+        time: "17:00",
+        seatsAvaiable: 2,
+        notes: "Please bring snacks"
     }, 
     {
         id: 3,
+        creatorId: 3,
         origin: "Decorah, IA",
-        destination: "New York, NY",
-        date: "11/03/25",
-        time: "19:30",
-        notes: "",
-        seats: 5
+        destination: "Los Angeles, CA",
+        date: "12/12/25",
+        time: "17:00",
+        seatsAvaiable: 3,
+        notes: ""
     }
     ]);
 
     const sendData = (trip) => {
-        // We get creater id from db
-        const requesterId = 1; // This will change later to actual requester ID
+        const requesterId = 1; // Get requesterId from 1) OAuth information 2) Landing or Info page 
         const data = {
             requesterId,
             tripId: trip.id
         };
         console.log("Sending request:", data);
 
-        // fetch("http://localhost:8080/api/requests", {
+        // fetch(`${BASE_URL}requests`, {
         //   method: "POST",
         //   headers: { "Content-Type": "application/json" },
         //   body: JSON.stringify(data)
@@ -79,7 +82,7 @@ export default function Home() {
                             </p>
 
                             <div className="d-flex justify-content-center gap-4">
-                                <p className="card-text md-0">Seats: {trip.seats}</p>
+                                <p className="card-text md-0">Seats: {trip.seatsAvaiable}</p>
                                 {trip.notes && trip.notes !== "None" ? (<p className="card-text mb-0">Notes: {trip.notes}</p>) : (<p className="card-text mb-0">No special requirements</p>)}
                             </div>
 

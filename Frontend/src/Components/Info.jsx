@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function Info() {
     const navigate = useNavigate();
     const handleSignIn = () => {
-        // window.location.href = "http://localhost:5173/home";
+        // Get userId -> Get hasCar information -> Update DB -> Load Home
         navigate("/home")
     };
     let isAuthenticated = false;

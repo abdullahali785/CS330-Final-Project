@@ -5,7 +5,7 @@ import tourists from "../Assets/Tourists.jpg"
 export default function Landing() {
     const navigate = useNavigate();
     const handleSignIn = () => {
-        // window.location.href = "http://localhost:5173/home";
+        // Sign In -> OAuth -> DB Check -> If exists: Load Home, Else: Register User and Load Info
         navigate("/info")
     };
 
