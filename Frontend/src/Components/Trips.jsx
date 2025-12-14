@@ -32,7 +32,8 @@ export default function Trips() {
             date: "11/03/25",
             time: "19:30",
             requester: "Hamza",
-            status: "Approved"
+            status: "Approved",
+            contact: "abdullah@luther.edu"
         }
     ]);
 
@@ -46,51 +47,6 @@ export default function Trips() {
     // </>
 
     // Car Owners' View
-    // <div>
-    // <Header />
-    // <div className="album py-5"> 
-    //     <div className="container"> 
-    //         {/* Row Start */}
-    //         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
-    //             {/* Card Start */}
-    //             {trips.map(trip => (
-    //             <div className="col"> 
-    //                 <div className="card shadow-sm"> 
-    //                     <img src={car} className="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
-    //                     <div className="card-body text-center"> 
-    //                         <p className="card-text fw-bold">
-    //                             {trip.origin}
-    //                             &nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-right" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg>&nbsp;
-    //                             {trip.destination}
-    //                         </p>
-
-    //                         <div className="d-flex justify-content-center align-items-center"> 
-    //                             <p className="text-body-secondary fw-bold">{formatDate(trip.date)}&nbsp;</p> 
-    //                             <p className="text-body-secondary fw-bold">at {trip.time}</p> 
-    //                         </div>  
-
-    //                         <div className="d-flex justify-content-center align-items-center"> 
-    //                             <p className="text-body-secondary fw-bold">Requester: {trip.requester}</p> 
-    //                         </div>  
-                            
-    //                         <div className="d-flex justify-content-center align-items-center"> 
-    //                             <div className="btn-group gap-3"> 
-    //                                 <button type="button" className="btn btn-success rounded-3 fw-bold">Approve</button>
-    //                                 <button type="button" className="btn btn-danger rounded-3 fw-bold">Deny</button>
-    //                             </div> 
-    //                         </div> 
-    //                     </div> 
-    //                 </div> 
-    //             </div>
-    //             ))}
-    //             {/* Card End */}
-    //         </div> 
-    //         {/* Row End */}
-    //     </div> 
-    // </div>
-    // </div>
-
-    // Requester View
     <div>
     <Header />
     <div className="album py-5"> 
@@ -112,18 +68,57 @@ export default function Trips() {
                             <div className="d-flex justify-content-center align-items-center"> 
                                 <p className="text-body-secondary fw-bold">{formatDate(trip.date)}&nbsp;</p> 
                                 <p className="text-body-secondary fw-bold">at {trip.time}</p> 
-                            </div>
+                            </div>  
 
-                            <div className="d-flex justify-content-center align-items-center">
-                                <p className={`fw-bold ${getStatusClass(trip.status)}`}>Status: {trip.status}</p>
-                            </div>
+                            <div className="d-flex justify-content-center align-items-center"> 
+                                <p className="text-body-secondary fw-bold">Requester: {trip.requester}</p> 
+                            </div>  
                             
-                            {/* <div className="d-flex justify-content-center align-items-center"> 
+                            <div className="d-flex justify-content-center align-items-center"> 
                                 <div className="btn-group gap-3"> 
                                     <button type="button" className="btn btn-success rounded-3 fw-bold">Approve</button>
                                     <button type="button" className="btn btn-danger rounded-3 fw-bold">Deny</button>
                                 </div> 
-                            </div>  */}
+                            </div> 
+                        </div> 
+                    </div> 
+                </div>
+                ))}
+                {/* Card End */}
+            </div> 
+            {/* Row End */}
+        </div> 
+    </div>
+
+    {/* Requester View */}
+    <div className="album py-5"> 
+        <div className="container"> 
+            {/* Row Start */}
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
+                {/* Card Start */}
+                {trips.map(trip => (
+                <div className="col"> 
+                    <div className="card shadow-sm"> 
+                        <img src={car} className="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
+                        <div className="card-body text-center"> 
+                            <p className="card-text fw-bold">
+                                {trip.origin}
+                                &nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-right" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg>&nbsp;
+                                {trip.destination}
+                            </p>
+
+                            <div className="d-flex justify-content-center align-items-center"> 
+                                <p className="text-body-secondary fw-bold">{formatDate(trip.date)}&nbsp;</p> 
+                                <p className="text-body-secondary fw-bold">at {trip.time}</p> 
+                            </div>
+
+                            <div className="d-flex flex-column align-items-center">
+                                <p className={`fw-bold mb-1 ${getStatusClass(trip.status)}`}>Status: {trip.status}</p>
+                                {trip.status === "Approved"
+                                    ? (<p className="fw-bold mb-0">Contact: {trip.contact}</p>) 
+                                    : (<p className="fw-bold mb-0 invisible">Contact</p>)
+                                }
+                            </div>
                         </div> 
                     </div> 
                 </div>
@@ -155,7 +150,9 @@ function formatDate(dateStr) {
 }
 
 function getStatusClass(status) {
-  if (status === "Approved") return "text-success";
-  if (status === "Denied") return "text-danger";
-  return "text-dark";
+    status = status.toLowerCase()
+    if (status === "approved") return "text-success";
+    if (status === "denied") return "text-danger";
+    
+    return "text-dark";
 }
