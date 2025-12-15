@@ -6,17 +6,17 @@ PandAuth authentication
 @version: 2025.12
 """
 
-import datetime
 import json
 
 import requests
-from flask import Blueprint, current_app, redirect, request, url_for
+from flask import Blueprint, current_app, redirect, request
 from flask_login import login_required, login_user, logout_user
-
+import dotenv
 from . import client, db, login_manager
 from .database.models import Users as User
 
 auth = Blueprint("auth", __name__, url_prefix="/auth")
+frontend_url = current_app.config.get("FRONTEND_URL")
 
 
 @auth.get("/login")
@@ -90,12 +90,12 @@ def callback():
         # User.create(unique_id, users_name, users_email, picture)
         db.session.add(user)
         db.session.commit()
-        return redirect("http://localhost:5173/info")
+        return redirect(frontend_url+ "info")
     # Begin user session by logging the user in
     login_user(user)
     # Send user back to homepage
     
-    return redirect("http://localhost:5173/home")
+    return redirect(frontend_url +"home")
 
 
 @auth.route("/logout")
@@ -103,7 +103,7 @@ def callback():
 def logout():
     """Log out"""
     logout_user()
-    return redirect("http://localhost:5173/")
+    return redirect(frontend_url)
 
 
 @login_manager.user_loader
