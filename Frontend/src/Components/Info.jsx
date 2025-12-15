@@ -1,34 +1,25 @@
 // Takes user info (do you have a car or no etc)
-// One view for a returing user, one for a new user 
 import { useNavigate } from "react-router-dom";
 import tourists from "../Assets/Tourists.jpg"
 import { useAuth } from "../Context/AuthContext";
 
 export default function Info() {
-    const BASE_URL = "http://localhost:8080/api/v1/";
-    const navigate = useNavigate();
-    const { user } = useAuth();
-
-    // If not logged in, back to landing
-    if (!user) {
-        return <Navigate to="/" replace />;
-    }
+    const BASE_URL = "http://localhost:5000/api/v1/";
+    const { user, setUser } = useAuth();
 
     const handleChoice = async (hasCar) => {
         try {
             await fetch(`${BASE_URL}info`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 credentials: "include",
                 body: JSON.stringify({
                     userId: user.id,
-                    hasCar: hasCar
+                    hasCar
                 }),
             });
-            navigate("/home");
-
+            // Update auth state
+            setUser(prev => ({...prev, hasCar}));
         } catch (err) {
             console.error("Failed to update hasCar", err);
         }

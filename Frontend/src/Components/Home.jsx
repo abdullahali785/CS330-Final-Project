@@ -1,67 +1,122 @@
 // Main page with all the cards 
-import { useState } from "react";
-import car from "../Assets/Car.png";
 import Header from "./Header";
+import car from "../Assets/Car.png";
+import { useEffect, useState } from "react";
+import { useAuth } from "../Context/AuthContext";
 
 export default function Home() {
-    const BASE_URL = "http://localhost:8080/api/v1/";
-    // const [trips, setTrips] = useState([]);
-    
-    // useEffect(() => {
-    //     fetch(`${BASE_URL}forms`) // API URL to get all trips
-    //     .then(res => res.json())
-    //     .then(data => setTrips(data))
-    //     .catch(err => console.error(err));
-    // }, []);
+    const BASE_URL = "http://localhost:5000/api/v1/";
+    const { user } = useAuth();
 
-    const [trips, setTrips] = useState([
-    { // All of this comes from DB
-        id: 1,
-        creatorId: 1, 
-        origin: "Decorah, IA",
-        destination: "Rochester, MN",
-        date: "12/01/25",
-        time: "17:00",
-        seatsAvaiable: 1,
-        notes: "No pets allowed"
-    },
-    {
-        id: 2,
-        creatorId: 2,
-        origin: "Decorah, IA",
-        destination: "New York, NY",
-        date: "12/29/25",
-        time: "17:00",
-        seatsAvaiable: 2,
-        notes: "Please bring snacks"
-    }, 
-    {
-        id: 3,
-        creatorId: 3,
-        origin: "Decorah, IA",
-        destination: "Los Angeles, CA",
-        date: "12/12/25",
-        time: "17:00",
-        seatsAvaiable: 3,
-        notes: ""
+    if (user?.hasCar === null) {
+        return null; // AuthRedirect will handle navigation
     }
-    ]);
+
+    const [trips, setTrips] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (!user) return;
+
+        fetch(`${BASE_URL}forms`, {
+            credentials: "include"
+        })
+        .then(res => res.json())
+        .then(data => {
+            setTrips(data);
+            setLoading(false);
+        })
+        .catch(err => {
+            console.error("Failed to fetch trips", err);
+            setLoading(false);
+        });
+    }, [user]);
+
+    // !!! Replace with fetch from /forms once backend ready !!!
+    // const [trips, setTrips] = useState([
+    // { // All of this comes from DB
+    //     id: 1,
+    //     creatorId: 1, 
+    //     origin: "Decorah, IA",
+    //     destination: "Rochester, MN",
+    //     date: "12/01/25",
+    //     time: "17:00",
+    //     seatsAvaiable: 1,
+    //     notes: "No pets allowed"
+    // },
+    // {
+    //     id: 2,
+    //     creatorId: 2,
+    //     origin: "Decorah, IA",
+    //     destination: "New York, NY",
+    //     date: "12/29/25",
+    //     time: "17:00",
+    //     seatsAvaiable: 2,
+    //     notes: "Please bring snacks"
+    // }, 
+    // {
+    //     id: 3,
+    //     creatorId: 3,
+    //     origin: "Decorah, IA",
+    //     destination: "Los Angeles, CA",
+    //     date: "12/12/25",
+    //     time: "17:00",
+    //     seatsAvaiable: 3,
+    //     notes: ""
+    // }
+    // ]);
 
     const sendData = (trip) => {
-        const requesterId = 1; // Get requesterId from 1) OAuth information 2) Landing or Info page 
+        if (!user) return;
+
         const data = {
-            requesterId,
+            requesterId: user.id, // Get requesterId from OAuth information
             tripId: trip.id
         };
         console.log("Sending request:", data);
 
-        // fetch(`${BASE_URL}requestToJoin`, {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify(data)
-        // });
+        fetch(`${BASE_URL}requestToJoin`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(data)
+        });
     };
+    
 
+    // Loading State
+    if (loading) {
+        return (
+        <div>
+        <Header />
+        <div className="album py-5"> 
+            <div className="container"> 
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
+                    <p>Loading trips...</p>
+                </div> 
+            </div> 
+        </div>
+        </div>
+        );
+    }
+
+    // No trips State
+    if (trips.length === 0) {
+        return (
+        <div>
+        <Header />
+        <div className="album py-5"> 
+            <div className="container"> 
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
+                    <p>No trips to show</p>
+                </div> 
+            </div> 
+        </div>
+        </div>
+        );
+    }
+
+    // Normal State
     return (
     <div>
     <Header />
@@ -71,18 +126,18 @@ export default function Home() {
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
                 {/* Card Start */}
                 {trips.map(trip => (
-                <div className="col"> 
+                <div className="col" key={trip.id}> 
                     <div className="card shadow-sm"> 
                         <img src={car} className="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
                         <div className="card-body text-center"> 
                             <p className="card-text fw-bold">
-                                {trip.origin}
+                                {trip.origin ?? "Decorah, IA"}
                                 &nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-right" viewBox="0 0 16 16"><path fillRule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg>&nbsp;
-                                {trip.destination}
+                                {trip.destination ?? "Unkown Destination"}
                             </p>
 
                             <div className="d-flex justify-content-center gap-4">
-                                <p className="card-text md-0">Seats: {trip.seatsAvaiable}</p>
+                                <p className="card-text md-0">Seats: {trip.seatsAvaiable ?? 0}</p>
                                 {trip.notes && trip.notes !== "None" ? (<p className="card-text mb-0">Notes: {trip.notes}</p>) : (<p className="card-text mb-0">No special requirements</p>)}
                             </div>
 
