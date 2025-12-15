@@ -55,7 +55,7 @@ export default function Home() {
         };
         console.log("Sending request:", data);
 
-        // fetch(`${BASE_URL}requests`, {
+        // fetch(`${BASE_URL}requestToJoin`, {
         //   method: "POST",
         //   headers: { "Content-Type": "application/json" },
         //   body: JSON.stringify(data)

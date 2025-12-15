@@ -3,10 +3,23 @@
 import { useNavigate } from "react-router-dom";
 
 export default function Info() {
+    const BASE_URL = "http://localhost:8080/api/v1/";
     const navigate = useNavigate();
-    const handleSignIn = () => {
-        // Get userId -> Get hasCar information -> Update DB -> Load Home
+
+    const handleChoice = async (hasCar) => {
         navigate("/home")
+        // try {
+        //     await fetch(`${BASE_URL}userInfo`, {
+        //         method: "POST",
+        //         headers: {
+        //         "Content-Type": "application/json",
+        //         },
+        //         body: JSON.stringify({ hasCar }),
+        //     });
+        //     navigate("/home");
+        // } catch (err) {
+        //     console.error("Failed to update hasCar", err);
+        // }
     };
     let isAuthenticated = false;
 
@@ -21,7 +34,7 @@ export default function Info() {
             <div className="row row-cols-1 row-cols-lg-3 align-items-stretch justify-content-center g-4 py-5"> 
                 <div className="col">
                     <div className="card h-100 rounded-4 shadow-lg border-0 p-5">
-                        <button onClick={handleSignIn} className="btn card-btn yes-btn h-100 d-flex flex-column justify-content-center align-items-center rounded-4 p-5">
+                        <button onClick={() => handleChoice(true)} className="btn card-btn yes-btn h-100 d-flex flex-column justify-content-center align-items-center rounded-4 p-5">
                             <span className="display-6 fw-bold">Yes, I do!</span>
                         </button>
                     </div>
@@ -29,7 +42,7 @@ export default function Info() {
 
                 <div className="col">
                     <div className="card h-100 rounded-4 shadow-lg border-0 p-5">
-                        <button onClick={handleSignIn} className="btn card-btn no-btn h-100 d-flex flex-column justify-content-center align-items-center rounded-4 p-5">
+                        <button onClick={() => handleChoice(false)} className="btn card-btn no-btn h-100 d-flex flex-column justify-content-center align-items-center rounded-4 p-5">
                             <span className="display-6 fw-bold">No, not yet</span>
                         </button>
                     </div>

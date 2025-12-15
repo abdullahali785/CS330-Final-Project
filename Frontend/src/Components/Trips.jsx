@@ -4,24 +4,52 @@ import Header from "./Header.jsx";
 import car from "../Assets/Car.png";
 
 export default function Trips() {
-    const BASE_URL = "http://localhost:8080/api/v1/";
+    const BASE_URL = "http://localhost:5000/api/v1/";
     // const [trips, setTrips] = useState([]);
     // useEffect(() => {
-    //     fetch(`${BASE_URL}allrequests`) // API URL to get all trips
+    //     fetch(`${BASE_URL}allRequests`) // API URL to get all trips
     //     .then(res => res.json())
     //     .then(data => setTrips(data))
     //     .catch(err => console.error(err));
     // }, []);
 
-    // Check what API returns and add here
+    // Data we get from allRequests
     // {
-    //     id: 1,
-    //     requestorId: 2,
-    //     formId: 3,
-    //     status: "Pending"
-    // },
+    //     id
+    //     requestorId
+    //     formId
+    //     status
+    // }
 
-    let hasCar = true;
+    // Get trip data 
+    // {
+    //     id
+    //     origin
+    //     destination
+    //     date
+    //     time 
+    // }
+
+    // Get user data
+    // {
+    //     id
+    //     name 
+    //     email
+    // }
+
+    // Build final data array
+    // {
+    //     request.id
+    //     trip.origin
+    //     trip.destination
+    //     trip.date
+    //     trip.time
+    //     user.requester
+    //     user.contact
+    //     request.status
+    // }
+
+    let hasCar = false;
     const [trips, setTrips] = useState([
         {
             id: 1,
