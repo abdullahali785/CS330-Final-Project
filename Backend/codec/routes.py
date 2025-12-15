@@ -18,6 +18,36 @@ main = Blueprint("main", __name__, url_prefix="/api/v1")
 def home():
     return json.dumps({"message": "Welcome to the Shuttlr API"}), 200
 
+@main.route('/user', methods=['GET'])
+def user():
+    #Get user info from the database
+    user_id = request.form["userId"]
+    user = db.session.query(Users).filter(Users.id == user_id).first()
+    if not user:
+        return json.dumps({"error": "User not found"}), 404
+    user_data = {column.name: getattr(user, column.name) for column in user.__table__.columns}
+    return json.dumps(user_data), 200
+
+@main.route('/users', methods=['GET'])
+def users():
+    #Get all users from the database
+    users = db.session.query(Users).all()
+    users_data = [
+        {column.name: getattr(user, column.name) for column in user.__table__.columns}
+        for user in users
+    ]
+    return json.dumps(users_data), 200
+
+@main.route('form', methods=['GET'])
+def form():
+    #Get form info from the database
+    form_id = request.form["formId"]
+    form = db.session.query(Forms).filter(Forms.id == form_id).first()
+    if not form:
+        return json.dumps({"error": "Form not found"}), 404
+    form_data = {column.name: getattr(form, column.name) for column in form.__table__.columns}
+    return json.dumps(form_data), 200
+
 @main.route('/forms', methods=['GET'])
 def forms():
     #Get all forms from the database
@@ -63,7 +93,7 @@ def submit_form():
     return json.dumps({"message": "Form submitted successfully"}), 200
 
 
-@main.route('/allrequests', methods=['GET'])
+@main.route('/allRequests', methods=['GET'])
 def all_requests():
     creatorId = request.form["creatorId"] if "creatorId" in request.form else None
     requestorId = request.form["requestorId"] if "requestorId" in request.form else None
