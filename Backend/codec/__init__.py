@@ -53,10 +53,11 @@ def create_app():
     # Create tables
     with app.app_context():
         Base.metadata.create_all(bind=db.engine)
+        
 
     with app.app_context():
         mm.init_app(app)
-      
+
 
     # Register blueprints
     app.register_blueprint(auth)
