@@ -6,7 +6,7 @@ export default function Landing() {
     const navigate = useNavigate();
     const handleSignIn = () => {
         // Sign In -> OAuth -> DB Check -> If exists: Load Home, Else: Register User and Load Info
-        navigate("/info")
+        window.location.href = "https://codec.luther.edu:5000/auth/login";
     };
 
     return (
