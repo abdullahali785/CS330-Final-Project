@@ -7,7 +7,6 @@ import Trips from "./Trips";
 
 export default function App() {
   return (
-    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/info" element={<Info />} />
@@ -15,6 +14,5 @@ export default function App() {
         <Route path="/add" element={<Add />} />
         <Route path="/trips" element={<Trips />} />
       </Routes>
-    </BrowserRouter>
   );
 }
