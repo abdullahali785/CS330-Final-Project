@@ -23,6 +23,12 @@ def info():
     #confirm if you have a car and edit the user db
     user_id = request.form["userId"]
     has_car = request.form["hasCar"]
+    user = db.session.query(Users).filter(Users.id == user_id).first()
+    if not user:
+        return json.dumps({"error": "User not found"}), 404
+    user.hasCar = has_car.lower() == 'true'
+    db.session.commit()
+    return json.dumps({"message": "User info updated successfully"}), 200
 
 @main.route('/user', methods=['GET'])
 def user():
