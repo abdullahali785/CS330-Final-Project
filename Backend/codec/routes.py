@@ -38,7 +38,7 @@ def users():
     ]
     return json.dumps(users_data), 200
 
-@main.route('form', methods=['GET'])
+@main.route('/form', methods=['GET'])
 def form():
     #Get form info from the database
     form_id = request.form["formId"]
