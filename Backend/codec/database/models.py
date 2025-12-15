@@ -2,7 +2,7 @@ import csv
 import datetime
 import logging
 import pathlib
-
+from flask_login import UserMixin
 import click
 import sqlalchemy as sqla
 from sqlalchemy import Column, Float, ForeignKey, Integer, String, DateTime
@@ -19,7 +19,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 class Base(DeclarativeBase): ...
 
-class Users(Base):
+class Users(Base,UserMixin):
     __tablename__ = "student"
     id : Mapped[str] =  mapped_column(unique=True, primary_key=True)
     name : Mapped[str] =  mapped_column()

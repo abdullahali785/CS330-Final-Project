@@ -92,7 +92,7 @@ def callback():
         db.session.commit()
         return redirect("http://localhost:5173/info")
     # Begin user session by logging the user in
-    # login_user(user)
+    login_user(user)
     # Send user back to homepage
     
     return redirect("http://localhost:5173/home")
@@ -103,7 +103,7 @@ def callback():
 def logout():
     """Log out"""
     logout_user()
-    return redirect()
+    return redirect("http://localhost:5173/")
 
 
 @login_manager.user_loader

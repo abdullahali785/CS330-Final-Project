@@ -18,6 +18,12 @@ main = Blueprint("main", __name__, url_prefix="/api/v1")
 def home():
     return json.dumps({"message": "Welcome to the Shuttlr API"}), 200
 
+@main.route('/info')
+def info():
+    #confirm if you have a car and edit the user db
+    user_id = request.form["userId"]
+    has_car = request.form["hasCar"]
+
 @main.route('/user', methods=['GET'])
 def user():
     #Get user info from the database
