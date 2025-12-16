@@ -4,8 +4,8 @@ import { use, useEffect, useState } from "react";
 import { useAuth } from "../Context/AuthContext";
 
 export default function Home() {
-    // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
-    const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
+    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    // const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
     const { user , setUser } = useAuth();
     const [trips, setTrips] = useState([]);
     // const [loading, setLoading] = useState(true);
@@ -64,8 +64,8 @@ export default function Home() {
                 {/* Card Start */}
                 {trips.map(trip => (
                 <div className="col" key={trip.id}> 
-                    <div className="card shadow-sm"> 
-                        <img src="/Car.jpg" className="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
+                    <div className="card shadow-sm" >
+                        <img src="/Car.png"></img>
                         <div className="card-body text-center"> 
                             <p className="card-text fw-bold">
                                 {trip.origin ?? "Decorah, IA"}
