@@ -39,7 +39,7 @@ def user():
         }), 200
     return json.dumps({"error": "User not authenticated"}), 401
 
-@main.route('/user', methods=['GET'])
+@main.route('/user', methods=['POST'])
 def get_user():
     #Get user info from the database
     form = request.get_json()
@@ -60,16 +60,18 @@ def users():
     ]
     return json.dumps(users_data), 200
 
-@main.route('/form', methods=['GET'])
+@main.route('/form', methods=['POST'])
 def form():
     #Get form info from the database
     form = request.get_json()
+    print("form",form)
     form_id = form["formId"]
     form = db.session.query(Forms).filter(Forms.id == form_id).first()
     if not form:
         return json.dumps({"error": "Form not found"}), 404
     form_data = {column.name: getattr(form, column.name) for column in form.__table__.columns}
     return json.dumps(form_data), 200
+    # return json.dumps({"message": "Form endpoint reached"}), 200
 
 @main.route('/forms', methods=['GET'])
 def forms():
@@ -126,6 +128,11 @@ def all_requests():
     print("form",form)
     creatorId = form["creatorId"] if "creatorId" in form else None
     requestorId = form["requestorId"] if "requestorId" in form else None
+    #get requests and print
+    all_req = db.session.query(Requests).all()
+    for r in all_req:
+        print(r.id, r.requestorId, r.formId, r.status)
+
     #Get all requests for forms created by the given creatorId or requestorId else return error
     if requestorId is None and creatorId is not None:
         requests = db.session.query(Requests).join(Forms, Requests.formId == Forms.id).filter(Forms.creatorId == creatorId).all()

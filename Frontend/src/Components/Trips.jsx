@@ -6,11 +6,12 @@ import { useAuth } from "../Context/AuthContext";
 import { useEffect } from "react";
 
 export default function Trips() {
-    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
-    // const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
+    // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
     const { user , setUser } = useAuth()
     const [form, setForm] = useState({})
-
+    const [requests,setRequests] = useState([])
+    const [tripsmerged,setTripsmerged] = useState([])
     if (!user) return null;
     const hasCar = user.hasCar === true;
 
@@ -43,12 +44,52 @@ export default function Trips() {
         })
         .then(data => {
             console.log("trips:", data);
-            setTrips(data);
+            
+            setRequests(data);
         })
         .catch(err => console.error(err));
     }, [form]);
 
 
+    useEffect(() => {
+        if (requests.length === 0) return;
+        const fetchTripDetails = async () => {
+            for(const req of requests){
+                console.log("Request:", req);
+                let tripData = await fetchData("form", { formId: req.formId });
+                let userData = await fetchData("user", { userId: "115613340079763044912" });
+
+                let mergedData = {
+                    id: req.id,
+                    origin: tripData.origin,
+                    destination: tripData.destination,
+                    date: tripData.date,
+                    time: tripData.time,
+                    requester: userData.name,
+                    status: req.status,
+                    contact: userData.email
+                };
+                console.log("Merged Data:", mergedData);    
+                setTripsmerged(prev => [...prev, mergedData]);                
+            }}
+            const fetchData = async (dest,form) => {
+                let data = await fetch(`${BASE_URL}`+dest, {
+                    method: "POST",
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(form),
+                }).then(res => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP ${res.status}`);
+                    }
+                    return res.json();
+                })
+                return data;
+            }
+            
+            fetchTripDetails();
+            
+    }, [requests]);
     // Data we get from allRequests
     // {
     //     id
@@ -186,7 +227,7 @@ export default function Trips() {
                             </p>
 
                             <div className="d-flex justify-content-center align-items-center"> 
-                                <p className="text-body-secondary fw-bold">{formatDate(trip.date)}&nbsp;</p> 
+                                {/* <p className="text-body-secondary fw-bold">{formatDate(trip.date)}&nbsp;</p>  */}
                                 <p className="text-body-secondary fw-bold">at {trip.time}</p> 
                             </div>  
 
@@ -203,7 +244,7 @@ export default function Trips() {
                                 </div>
                             </>) : (<>
                                 <div className="d-flex flex-column align-items-center">
-                                    <p className={`fw-bold mb-1 ${getStatusClass(trip.status)}`}>Status: {trip.status}</p>
+                                    {/* <p className={`fw-bold mb-1 ${getStatusClass(trip.status)}`}>Status: {trip.status}</p> */}
                                     {trip.status === "Approved"
                                         ? (<p className="fw-bold mb-0">Contact: {trip.contact}</p>) 
                                         : (<p className="fw-bold mb-0 invisible">Contact</p>)
@@ -223,27 +264,27 @@ export default function Trips() {
     )
 }
 
-function formatDate(dateStr) {
-    const [month, day, year] = dateStr.split("/").map(Number);
+// function formatDate(dateStr) {
+//     const [month, day, year] = dateStr.split("/").map(Number);
 
-    const fullYear = year < 100 ? 2000 + year : year;
-    const date = new Date(fullYear, month - 1, day);
+//     const fullYear = year < 100 ? 2000 + year : year;
+//     const date = new Date(fullYear, month - 1, day);
 
-    const dayNum = date.getDate();
-    const suffix =
-        dayNum % 10 === 1 && dayNum !== 11 ? "st" :
-        dayNum % 10 === 2 && dayNum !== 12 ? "nd" :
-        dayNum % 10 === 3 && dayNum !== 13 ? "rd" :
-        "th";
+//     const dayNum = date.getDate();
+//     const suffix =
+//         dayNum % 10 === 1 && dayNum !== 11 ? "st" :
+//         dayNum % 10 === 2 && dayNum !== 12 ? "nd" :
+//         dayNum % 10 === 3 && dayNum !== 13 ? "rd" :
+//         "th";
 
-    const monthName = date.toLocaleString("en-US", { month: "long" });
-    return `${dayNum}${suffix} ${monthName}, ${date.getFullYear()}`;
-}
+//     const monthName = date.toLocaleString("en-US", { month: "long" });
+//     return `${dayNum}${suffix} ${monthName}, ${date.getFullYear()}`;
+// }
 
-function getStatusClass(status) {
-    status = status.toLowerCase()
-    if (status === "approved") return "text-success";
-    if (status === "denied") return "text-danger";
+// function getStatusClass(status) {
+//     status = status.toLowerCase()
+//     if (status === "approved") return "text-success";
+//     if (status === "denied") return "text-danger";
     
-    return "text-dark";
-}
+//     return "text-dark";
+// }

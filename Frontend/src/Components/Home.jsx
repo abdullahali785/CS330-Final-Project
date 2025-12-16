@@ -5,8 +5,8 @@ import { use, useEffect, useState } from "react";
 import { useAuth } from "../Context/AuthContext";
 
 export default function Home() {
-    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
-    // const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
+    // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
     const { user , setUser } = useAuth();
     const [trips, setTrips] = useState([]);
     // const [loading, setLoading] = useState(true);
@@ -72,8 +72,8 @@ export default function Home() {
         ) return;
 
         const data = {
-            requesterId: user.id,
-            tripId: trip.id
+            requestorId: user.id,
+            formId: trip.id
         };
 
         try {
