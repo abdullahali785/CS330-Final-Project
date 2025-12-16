@@ -210,8 +210,8 @@ export default function Trips() {
                                 
                                 <div className="d-flex justify-content-center align-items-center"> 
                                     <div className="btn-group gap-3"> 
-                                        <button type="button" onClick={() => approveReq(trip)} className="btn btn-success rounded-3 fw-bold" disabled={trip.status !== "Waiting"}>Approve</button>
-                                        <button type="button" onClick={() => denyReq(trip)} className="btn btn-danger rounded-3 fw-bold" disabled={trip.status !== "Waiting"}>Deny</button>
+                                        <button type="button" onClick={() => approveReq(trip)} className="btn btn-success rounded-3 fw-bold" disabled={trip.status !== "pending"}>Approve</button>
+                                        <button type="button" onClick={() => denyReq(trip)} className="btn btn-danger rounded-3 fw-bold" disabled={trip.status !== "pending"}>Deny</button>
                                     </div> 
                                 </div>
                             </>) : (<>
