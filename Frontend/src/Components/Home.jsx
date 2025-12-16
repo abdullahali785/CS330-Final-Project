@@ -22,7 +22,6 @@ export default function Home() {
     }, [user])
 
     useEffect(() => {
-        // if (!user) return;
 
         fetch(`${BASE_URL}forms`, {
             credentials: "include",
@@ -35,7 +34,7 @@ export default function Home() {
             console.error("Failed to fetch trips", err);
         });
 
-        
+        if(user && !user.hasCar){
         fetch(`${BASE_URL}allRequests`, {
             credentials: "include",
             method:"POST",
@@ -45,11 +44,13 @@ export default function Home() {
         })
         .then(res => res.json())
         .then(data => {
-            setReqTrips(data);
+            const arry1 = new Set(data.map(trip=>trip.formId))
+            const difference = trips.filter(trip=>!arry1.has(trip.id))
+            setTrips(difference)
         })
         .catch(err => {
             console.error("Failed to fetch trips", err);
-        });
+        });}
     }, [user]);
 
     const sendData = async (trip) => {
@@ -114,9 +115,9 @@ export default function Home() {
                             
                             <div className="d-flex justify-content-center align-items-center"> 
                                 <div className="btn-group">
-                                    <button type="button" onClick={() => sendData(trip)} className="btn btn-success fw-bold" disabled={trip.creatorId === user.id || trip.seatsAvailable === 0 || requestedTrips.has(trip.id)}>
+                                    {!user.hasCar&&<button type="button" onClick={() => sendData(trip)} className="btn btn-success fw-bold" disabled={trip.creatorId === user.id || trip.seatsAvailable === 0 || requestedTrips.has(trip.id)}>
                                         {requestedTrips.has(trip.id) ? "Requested" : trip.seatsAvailable === 0 ? "Full" : "Request"}
-                                    </button>
+                                    </button>}
                                 </div> 
                             </div> 
                         </div> 
