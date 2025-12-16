@@ -1,11 +1,14 @@
 // Landing page. Has a log in option. Takes to OAuth
-import { useNavigate } from "react-router-dom";
 import tourists from "../Assets/Tourists.jpg"
 
 export default function Landing() {
-    const navigate = useNavigate();
     const handleSignIn = () => {
-        // Sign In -> OAuth -> DB Check -> If exists: Load Home, Else: Register User and Load Info
+        const { user, loading } = useAuth();
+        
+        if (loading) return null;
+        if (user) {
+            return <Navigate to="/redirect" replace />;
+        }
         window.location.href = "https://codec.luther.edu:5000/auth/login";
     };
 
