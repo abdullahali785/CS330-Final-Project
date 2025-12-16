@@ -13,7 +13,7 @@ useEffect(() => {
       if(!user){
         async function loadUser() {
         try {
-            const res = await fetch("https://codec.luther.edu:5000/api/v1/user", {
+            const res = await fetch("https://cs330-final-project.onrender.com/api/v1/user", {
                 credentials: "include",
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -25,7 +25,7 @@ useEffect(() => {
             // Normalize user object
             if (data.error) {
                 setUser(null);
-                window.location.href = "http://localhost:5173"
+                window.location.href = "https://cs330-final-project-m34n.onrender.com"
             }
 
             setUser({

@@ -7,7 +7,7 @@ export default function Header() {
     const handleSignOut = () => {
         sessionStorage.clear()
         setUser(null)
-        window.location.href = "http://localhost:5173"
+        window.location.href = "https://cs330-final-project-m34n.onrender.com/"
     };
 
     return user? (
