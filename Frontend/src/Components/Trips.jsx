@@ -20,7 +20,7 @@ export default function Trips() {
         if (user.hasCar) {
             setForm({ creatorId:user.id })
         } else{
-            setForm({ creatorId:user.id })
+            setForm({ requestorId:user.id })
         }
     }, [user])
     
