@@ -1,18 +1,21 @@
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
 
 export default function Header() {
     const navigate = useNavigate();
+    const {user,setUser} = useAuth()
     const handleSignOut = () => {
-        window.location.href = "https://cs330-final-project.onrender.com/auth/logout";
+        sessionStorage.clear()
+        setUser(null)
     };
 
-    return (
+    return user? (
     <div className="container">
         <header className="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
             <span className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none fw-bold fs-4" style={{ cursor: "pointer" }} onClick={() => navigate("/home")}>RidePal</span>
             <ul className="nav nav-pills">
                 <li className="nav-item">
-                    <button className="nav-link active fw-bold" onClick={() => navigate("/add")}>Add a Ride</button>
+                    {user.hasCar && <button className="nav-link active fw-bold" onClick={() => navigate("/add")}>Add a Ride</button>}
                 </li>
 
                 <li className="nav-item">
@@ -25,5 +28,5 @@ export default function Header() {
             </ul>
         </header>
     </div>
-  );
+  ):'loading';
 }

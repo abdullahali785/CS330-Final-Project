@@ -1,31 +1,33 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useSearchParams,Outlet } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import { useEffect } from "react";
 export default function ProtectedRoute({ children }) {
-  const { user, setUser, loading,setLoading } = useAuth();
-  // Still checking auth
-  // if (loading) return null;
+  const { user, setUser} = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
   
-  if(!user){
-    useEffect(() => {
-
+  
+useEffect(() => {
+    if(sessionStorage.getItem("userId")=='null' || sessionStorage.getItem("userId")==null){
+        sessionStorage.setItem("userId",searchParams.get("userId"))
+      }
+      if(!user){
         async function loadUser() {
         try {
-            const res = await fetch("https://cs330-final-project.onrender.com/api/v1/me", {
-                credentials: "include"
+            console.log(sessionStorage.getItem("userId"))
+            const res = await fetch("https://codec.luther.edu:5000/api/v1/user", {
+                credentials: "include",
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId: sessionStorage.getItem("userId")
+                })
             });
-            console.log("here")
-
-            // if (!res.ok) {
-            //     setUser(null);
-            //     return;
-            // }
             const data = await res.json();
             console.log("data",data)
             // Normalize user object
-            if (!data || !data.id) {
+            if (data.error) {
                 setUser(null);
-                return;
+                window.location.href = "http://localhost:5173"
             }
 
             setUser({
@@ -42,19 +44,17 @@ export default function ProtectedRoute({ children }) {
         } catch (err) {
             console.error("Auth load failed", err);
             setUser(null);
-        } finally {
-            setLoading(false);
-        }
+        } 
         }
 
         loadUser();
+      }
+      
     }, []);
+
+  if(sessionStorage.getItem("userId")==null ||sessionStorage.getItem("userId")=='null'){
+    <Navigate to="/"/>
   }
 
-  // Not logged in
-  if (!user) {
-    return <Navigate to="/" replace />;
-  }
-
-  return children;
+  return <Outlet />
 }

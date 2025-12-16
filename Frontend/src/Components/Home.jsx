@@ -4,12 +4,22 @@ import { use, useEffect, useState } from "react";
 import { useAuth } from "../Context/AuthContext";
 
 export default function Home() {
-    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
-    // const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
-    const { user , setUser } = useAuth();
+    // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
+    const { user } = useAuth();
     const [trips, setTrips] = useState([]);
-    // const [loading, setLoading] = useState(true);
+    const [form, setForm] = useState({})
+    const [reqTrips,setReqTrips] = useState({})
     const [requestedTrips, setRequestedTrips] = useState(new Set());
+
+     useEffect(()=>{
+
+        if (user && user.hasCar) {
+            setForm({ creatorId:user.id })
+        } else if(user && !user.hasCar){
+            setForm({ requestorId:user.id })
+        }
+    }, [user])
 
     useEffect(() => {
         // if (!user) return;
@@ -20,11 +30,25 @@ export default function Home() {
         .then(res => res.json())
         .then(data => {
             setTrips(data);
-            // setLoading(false);
         })
         .catch(err => {
             console.error("Failed to fetch trips", err);
-            // setLoading(false);
+        });
+
+        
+        fetch(`${BASE_URL}allRequests`, {
+            credentials: "include",
+            method:"POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(form)
+            
+        })
+        .then(res => res.json())
+        .then(data => {
+            setReqTrips(data);
+        })
+        .catch(err => {
+            console.error("Failed to fetch trips", err);
         });
     }, [user]);
 
@@ -54,7 +78,7 @@ export default function Home() {
         }
     };
 
-    return (
+    return user? (
     <div>
     <Header />
     <div className="album py-5"> 
@@ -62,6 +86,11 @@ export default function Home() {
             {/* Row Start */}
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
                 {/* Card Start */}
+
+                {/* design here for no trips */}
+                {trips.length==0 && <div>No trips at this time</div>}
+                {/* end */}
+
                 {trips.map(trip => (
                 <div className="col" key={trip.id}> 
                     <div className="card shadow-sm" >
@@ -79,7 +108,7 @@ export default function Home() {
                             </div>
 
                             <div className="d-flex justify-content-center align-items-center"> 
-                                <p className="text-body-secondary fw-bold">{formatDate(trip.date)}&nbsp;</p> 
+                                <p className="text-body-secondary fw-bold">{trip.date}&nbsp;</p> 
                                 <p className="text-body-secondary fw-bold">at {trip.time}</p> 
                             </div>  
                             
@@ -100,22 +129,22 @@ export default function Home() {
         </div> 
     </div>
     </div>
-    )
+    ):""
 }
 
-function formatDate(dateStr) {
-    const [month, day, year] = dateStr.split("/").map(Number);
+// function formatDate(dateStr) {
+//     const [month, day, year] = dateStr.split("/").map(Number);
 
-    const fullYear = year < 100 ? 2000 + year : year;
-    const date = new Date(fullYear, month - 1, day);
+//     const fullYear = year < 100 ? 2000 + year : year;
+//     const date = new Date(fullYear, month - 1, day);
 
-    const dayNum = date.getDate();
-    const suffix =
-        dayNum % 10 === 1 && dayNum !== 11 ? "st" :
-        dayNum % 10 === 2 && dayNum !== 12 ? "nd" :
-        dayNum % 10 === 3 && dayNum !== 13 ? "rd" :
-        "th";
+//     const dayNum = date.getDate();
+//     const suffix =
+//         dayNum % 10 === 1 && dayNum !== 11 ? "st" :
+//         dayNum % 10 === 2 && dayNum !== 12 ? "nd" :
+//         dayNum % 10 === 3 && dayNum !== 13 ? "rd" :
+//         "th";
 
-    const monthName = date.toLocaleString("en-US", { month: "long" });
-    return `${dayNum}${suffix} ${monthName}, ${date.getFullYear()}`;
-}
+//     const monthName = date.toLocaleString("en-US", { month: "long" });
+//     return `${dayNum}${suffix} ${monthName}, ${date.getFullYear()}`;
+// }

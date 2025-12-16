@@ -28,7 +28,7 @@ export default function Info() {
         }
     };
 
-    return (
+    return user?(
     <div style={{backgroundImage: `url(/Tourists.jpg)`, minHeight: "100vh", width: "100%", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", display: "flex", alignItems: "center", justifyContent: "center"}}>
     <div className="container-fluid text-center px-4 py-5 my-5">
         <div className="container">
@@ -55,5 +55,5 @@ export default function Info() {
         </div>
     </div>
     </div>
-    )
+    ):'loading'
 }

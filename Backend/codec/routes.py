@@ -65,7 +65,7 @@ def users():
 def form():
     #Get form info from the database
     form = request.get_json()
-    print("form",form)
+    
     form_id = form["formId"]
     form = db.session.query(Forms).filter(Forms.id == form_id).first()
     if not form:
@@ -76,7 +76,7 @@ def form():
 
 @main.route('/forms', methods=['GET'])
 def forms():
-    #Get all forms from the database
+    #Get all forms from the database wh
     forms = db.session.query(Forms).all()
     forms_data = [
         {column.name: getattr(form, column.name) for column in form.__table__.columns}
@@ -187,19 +187,19 @@ def accept_request():
     creatorId = form['creatorId']
     join_request = db.session.query(Requests).filter_by(id=request_id).first()
     
-    form = db.session.query(Forms).filter_by(id=join_request.formId).first()
+    formdata = db.session.query(Forms).filter_by(id=join_request.formId).first()
     # Check if the request exists
     if not join_request:
         return json.dumps({"error": "Request not found"}), 404
 
     # Verify that the form belongs to the creator
     
-    if form.creatorId != creatorId:
+    if formdata.creatorId != creatorId:
         return json.dumps({"error": "Unauthorized action"}), 403
      
     
     join_request.status = "approved"
-    form.seatsAvailable -= 1
+    formdata.seatsAvailable -= 1
     db.session.commit()
     return json.dumps({"message": "Request approved successfully"}), 200
 
@@ -208,9 +208,9 @@ def deny_request():
     form = request.get_json()
     request_id = form['requestId']
     join_request = db.session.query(Requests).filter_by(id=request_id).first()
-    form = db.session.query(Forms).filter_by(id=join_request.formId).first()
+    formdata = db.session.query(Forms).filter_by(id=join_request.formId).first()
     # Verify that the form belongs to the creator
-    if form.creatorId != request.form['creatorId']:
+    if formdata.creatorId != form['creatorId']:
         return json.dumps({"error": "Unauthorized action"}), 403
     # Check if the request exists
     if not join_request:

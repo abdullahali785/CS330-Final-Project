@@ -8,7 +8,7 @@ export default function Add() {
     const { user , setUser } = useAuth();
 
     const [form, setForm] = useState({
-        userId: user.id,
+        userId: "",
         origin: "",
         destination: "",
         date: "",

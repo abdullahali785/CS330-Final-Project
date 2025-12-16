@@ -14,6 +14,7 @@ from flask_login import login_required, login_user, logout_user
 import dotenv
 from . import client, db, login_manager
 from .database.models import Users as User
+from urllib.parse import urlencode
 
 auth = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -83,20 +84,26 @@ def callback():
     user = User(
         id=unique_id, name=users_name, email=users_email, hasCar=False
     )
-    frontend_url = "https://cs330-final-project-m34n.onrender.com/"
-
+    params = urlencode({
+        "userId": user.id
+    })
+    # frontend_url = "https://cs330-final-project-m34n.onrender.com/"
+    frontend_url = "http://localhost:5173"
     # Doesn't exist? Add it to the database.
     if not db.session.query(User).filter(User.id==unique_id).first():
         # User.create(unique_id, users_name, users_email, picture)
         db.session.add(user)
         db.session.commit()
         login_user(user)
-        return redirect(frontend_url+ "info")
+        return redirect(f"{frontend_url}/info?{params}")
+
     # Begin user session by logging the user in
     login_user(user)
     # Send user back to homepage
     
-    return redirect(frontend_url +"home")
+    
+
+    return redirect(f"{frontend_url}/home?{params}")
 
 
 @auth.route("/logout")

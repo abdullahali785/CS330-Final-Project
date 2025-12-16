@@ -5,36 +5,32 @@ import { useAuth } from "../Context/AuthContext";
 import { useEffect } from "react";
 
 export default function Trips() {
-    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
-    // const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
+    // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
     const { user , setUser } = useAuth()
     const [form, setForm] = useState({})
     const [requests,setRequests] = useState([])
     const [tripsmerged,setTripsmerged] = useState([])
-    if (!user) return null;
-    const hasCar = user.hasCar === true;
 
     useEffect(()=>{
-        if (!user) return null;
 
-        if (user.hasCar) {
+        if (user && user.hasCar) {
             setForm({ creatorId:user.id })
-        } else{
+        } else if(user && !user.hasCar){
             setForm({ requestorId:user.id })
         }
     }, [user])
     
     const [trips, setTrips] = useState([]);
     useEffect(() => {
-        if (!form.creatorId && !form.requestorId) return;
-
+        if(form){
         fetch(`${BASE_URL}allRequests`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
             body: JSON.stringify(form),
         })
-        // console.log(form)
+        
         .then(res => {
             if (!res.ok) {
                 throw new Error(`HTTP ${res.status}`);
@@ -46,52 +42,54 @@ export default function Trips() {
             setRequests(data);
         })
         .catch(err => console.error(err));
+        }
     }, [form]);
 
 
     useEffect(() => {
-        if (requests.length === 0) return;
         const fetchTripDetails = async () => {
-            for(const req of requests){
-                console.log("Request:", req);
-                let tripData = await fetchData("form", { formId: req.formId });
-                let userData = await fetchData("user", { userId: user.id });
+            const mergedResults = await Promise.all(
+            requests.map(async (req) => {
+                const tripData = await fetchData("form", { formId: req.formId });
+                const userData = await fetchData("user", { userId: req.requestorId });
+                const creatorData = await fetchData("user", { userId: tripData.creatorId });
 
-                let mergedData = {
-                    id: req.id,
-                    origin: tripData.origin,
-                    destination: tripData.destination,
-                    date: tripData.date,
-                    time: tripData.time,
-                    requester: userData.name,
-                    status: req.status,
-                    contact: userData.email
+                return {
+                id: req.id,
+                origin: tripData.origin,
+                destination: tripData.destination,
+                date: tripData.date,
+                time: tripData.time,
+                requester: userData.name,
+                status: req.status,
+                contact: creatorData.email,
                 };
-                console.log("Merged Data:", mergedData);    
-                setTripsmerged(prev => [...prev, mergedData]);                
-            }}
-            const fetchData = async (dest,form) => {
-                let data = await fetch(`${BASE_URL}`+dest, {
-                    method: "POST",
-                    credentials: "include",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(form),
-                }).then(res => {
-                    if (!res.ok) {
-                        throw new Error(`HTTP ${res.status}`);
-                    }
-                    return res.json();
-                })
-                return data;
-            }
-            
-            fetchTripDetails();
+            })
+            );
+
+            setTripsmerged(mergedResults); 
+        };
+
+        const fetchData = async (dest,form) => {
+            let data = await fetch(`${BASE_URL}`+dest, {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(form),
+            }).then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP ${res.status}`);
+                }
+                return res.json();
+            })
+            return data;
+        }
+        
+        fetchTripDetails();
             
     }, [requests]);
     
     useEffect(() => {
-        if (!form.creatorId && !form.requestorId) return;
-
         fetch(`${BASE_URL}allRequests`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -112,28 +110,10 @@ export default function Trips() {
         .catch(err => console.error(err));
     }, [form]);
 
-    // Get user data
-    // {
-    //     id
-    //     name 
-    //     email
-    // }
-
-    // Build final data array
-    // {
-    //     request.id
-    //     trip.origin
-    //     trip.destination
-    //     trip.date
-    //     trip.time
-    //     user.requester
-    //     user.contact
-    //     request.status
-    // }
 
     const approveReq = async (trip) => {
         if (!user) return;
-        const data = {tripId: trip.id, creatorId: user.id};
+        const data = {requestId: trip.id, creatorId: user.id};
 
         try {
             await fetch(`${BASE_URL}acceptRequest`, {
@@ -156,7 +136,8 @@ export default function Trips() {
 
     const denyReq = async (trip) => {
         if (!user) return;
-        const data = {tripId: trip.id, creatorId: user.id};
+        const data = {requestId: trip.id, creatorId: user.id};
+        
 
         try {
             await fetch(`${BASE_URL}denyRequest`, {
@@ -187,6 +168,8 @@ export default function Trips() {
             {/* Row Start */}
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
                 {/* Card Start */}
+                {tripsmerged.length==0 && <div>No requests Yet</div>}
+
                 {tripsmerged.map(trip => (
                 <div className="col" key={trip.id}>
                     <div className="card shadow-sm">
@@ -203,7 +186,7 @@ export default function Trips() {
                                 <p className="text-body-secondary fw-bold">at {trip.time}</p> 
                             </div>  
 
-                            {hasCar ? ( <>
+                            {user.hasCar ? ( <>
                                 <div className="d-flex justify-content-center align-items-center"> 
                                     <p className="text-body-secondary fw-bold">Requester: {trip.requester}</p> 
                                 </div>  
@@ -217,7 +200,7 @@ export default function Trips() {
                             </>) : (<>
                                 <div className="d-flex flex-column align-items-center">
                                     <p className={`fw-bold mb-1 ${getStatusClass(trip.status)}`}>Status: {trip.status}</p>
-                                    {trip.status === "Approved"
+                                    {trip.status === "approved"
                                         ? (<p className="fw-bold mb-0">Contact: {trip.contact}</p>) 
                                         : (<p className="fw-bold mb-0 invisible">Contact</p>)
                                     }
