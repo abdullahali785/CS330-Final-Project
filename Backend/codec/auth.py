@@ -16,7 +16,6 @@ from . import client, db, login_manager
 from .database.models import Users as User
 
 auth = Blueprint("auth", __name__, url_prefix="/auth")
-frontend_url = current_app.config.get("FRONTEND_URL")
 
 
 @auth.get("/login")
@@ -84,6 +83,7 @@ def callback():
     user = User(
         id=unique_id, name=users_name, email=users_email, hasCar=False
     )
+    frontend_url = current_app.config.get("FRONTEND_URL")
 
     # Doesn't exist? Add it to the database.
     if not db.session.query(User).filter(User.id==unique_id).first():
@@ -103,6 +103,8 @@ def callback():
 def logout():
     """Log out"""
     logout_user()
+    frontend_url = current_app.config.get("FRONTEND_URL")
+
     return redirect(frontend_url)
 
 

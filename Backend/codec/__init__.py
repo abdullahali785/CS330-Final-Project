@@ -58,8 +58,6 @@ def create_app():
     with app.app_context():
         mm.init_app(app)
 
-
-
     # Register blueprints
     app.register_blueprint(auth)
     app.register_blueprint(main)
