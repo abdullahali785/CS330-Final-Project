@@ -3,6 +3,7 @@ from .database.models import Forms, Users, Requests
 import uuid
 from codec import db
 import json
+from flask_login import current_user
 
 main = Blueprint("main", __name__, url_prefix="/api/v1")
 
@@ -24,8 +25,21 @@ def info():
     db.session.commit()
     return json.dumps({"message": "User info updated successfully"}), 200
 
-@main.route('/user', methods=['GET'])
+@main.route('/me', methods=['GET'])
 def user():
+    if current_user.is_authenticated:
+        print(current_user.id)
+        print(current_user.email)
+        print(current_user.name)
+        return json.dumps({
+            "id": current_user.id,
+            "email": current_user.email,
+            "name": current_user.name,
+            "hasCar": current_user.hasCar
+        }), 200
+    return json.dumps({"error": "User not authenticated"}), 401
+@main.route('/user', methods=['GET'])
+def get_user():
     #Get user info from the database
     form = request.get_json()
     user_id = form["userId"]
