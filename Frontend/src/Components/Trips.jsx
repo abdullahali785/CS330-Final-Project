@@ -65,6 +65,28 @@ export default function Trips() {
     //     date
     //     time 
     // }
+    useEffect(() => {
+        if (!form.creatorId && !form.requestorId) return;
+
+        fetch(`${BASE_URL}allRequests`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(form),
+        })
+        // console.log(form)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}`);
+            }
+            return res.json();
+        })
+        .then(data => {
+            console.log("trips:", data);
+            setTrips(data);
+        })
+        .catch(err => console.error(err));
+    }, [form]);
 
     // Get user data
     // {
