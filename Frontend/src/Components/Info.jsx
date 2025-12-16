@@ -1,8 +1,6 @@
 // Takes user info (do you have a car or no etc)
 import { Navigate, useNavigate } from "react-router-dom";
-import tourists from "../Assets/Tourists.jpg"
 import { useAuth } from "../Context/AuthContext";
-import { useState } from "react";
 
 export default function Info() {
     const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
@@ -31,7 +29,7 @@ export default function Info() {
     };
 
     return (
-    <div style={{backgroundImage: `url(${tourists})`, minHeight: "100vh", width: "100%", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", display: "flex", alignItems: "center", justifyContent: "center"}}>
+    <div style={{backgroundImage: `url(/Tourists.jpg)`, minHeight: "100vh", width: "100%", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", display: "flex", alignItems: "center", justifyContent: "center"}}>
     <div className="container-fluid text-center px-4 py-5 my-5">
         <div className="container">
             <h1 className="pb-2 display-4 fw-bold lh-1 text-body-emphasis">{user.name}, Welcome to RidePal!</h1>

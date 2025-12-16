@@ -1,6 +1,5 @@
 // Main page with all the cards 
 import Header from "./Header";
-import car from "../Assets/Car.png";
 import { use, useEffect, useState } from "react";
 import { useAuth } from "../Context/AuthContext";
 
@@ -29,40 +28,6 @@ export default function Home() {
         });
     }, [user]);
 
-    // !!! Replace with fetch from /forms once backend ready !!!
-    // const [trips, setTrips] = useState([
-    // { // All of this comes from DB
-    //     id: 1,
-    //     creatorId: 1, 
-    //     origin: "Decorah, IA",
-    //     destination: "Rochester, MN",
-    //     date: "12/01/25",
-    //     time: "17:00",
-    //     seatsAvaiable: 1,
-    //     notes: "No pets allowed"
-    // },
-    // {
-    //     id: 2,
-    //     creatorId: 2,
-    //     origin: "Decorah, IA",
-    //     destination: "New York, NY",
-    //     date: "12/29/25",
-    //     time: "17:00",
-    //     seatsAvaiable: 2,
-    //     notes: "Please bring snacks"
-    // }, 
-    // {
-    //     id: 3,
-    //     creatorId: 3,
-    //     origin: "Decorah, IA",
-    //     destination: "Los Angeles, CA",
-    //     date: "12/12/25",
-    //     time: "17:00",
-    //     seatsAvaiable: 3,
-    //     notes: ""
-    // }
-    // ]);
-
     const sendData = async (trip) => {
         if (
             !user ||
@@ -88,41 +53,7 @@ export default function Home() {
             console.error("Failed to send request", err);
         }
     };
-    
 
-    // Loading State
-    // if (loading) {
-    //     return (
-    //     <div>
-    //     <Header />
-    //     <div className="album py-5"> 
-    //         <div className="container"> 
-    //             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
-    //                 <p>Loading trips...</p>
-    //             </div> 
-    //         </div> 
-    //     </div>
-    //     </div>
-    //     );
-    // }
-
-    // No trips State
-    // if (trips.length === 0) {
-    //     return (
-    //     <div>
-    //     <Header />
-    //     <div className="album py-5"> 
-    //         <div className="container"> 
-    //             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
-    //                 <p>No trips to show</p>
-    //             </div> 
-    //         </div> 
-    //     </div>
-    //     </div>
-    //     );
-    // }
-
-    // Normal State
     return (
     <div>
     <Header />
@@ -134,7 +65,7 @@ export default function Home() {
                 {trips.map(trip => (
                 <div className="col" key={trip.id}> 
                     <div className="card shadow-sm"> 
-                        <img src={car} className="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
+                        <img src="/Car.jpg" className="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
                         <div className="card-body text-center"> 
                             <p className="card-text fw-bold">
                                 {trip.origin ?? "Decorah, IA"}

@@ -1,7 +1,6 @@
 // Takes user info (do you have a car or no etc)
 import { useState } from "react";
 import Header from "./Header.jsx";
-import car from "../Assets/Car.png";
 import { useAuth } from "../Context/AuthContext";
 import { useEffect } from "react";
 
@@ -21,7 +20,7 @@ export default function Trips() {
         if (user.hasCar) {
             setForm({ creatorId:user.id })
         } else{
-            setForm({ requestorId:user.id })
+            setForm({ creatorId:user.id })
         }
     }, [user])
     
@@ -106,6 +105,28 @@ export default function Trips() {
     //     date
     //     time 
     // }
+    useEffect(() => {
+        if (!form.creatorId && !form.requestorId) return;
+
+        fetch(`${BASE_URL}allRequests`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(form),
+        })
+        // console.log(form)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}`);
+            }
+            return res.json();
+        })
+        .then(data => {
+            console.log("trips:", data);
+            setTrips(data);
+        })
+        .catch(err => console.error(err));
+    }, [form]);
 
     // Get user data
     // {
@@ -125,39 +146,6 @@ export default function Trips() {
     //     user.contact
     //     request.status
     // }
-
-    // const [trips, setTrips] = useState([
-    //     {
-    //         id: 1,
-    //         origin: "Decorah, IA",
-    //         destination: "Rochester, MN",
-    //         date: "12/19/25",
-    //         time: "17:00",
-    //         requester: "Talha",
-    //         status: "Waiting",
-    //         contact: ""
-    //     },
-    //     {
-    //         id: 2,
-    //         origin: "Decorah, IA",
-    //         destination: "Minneapolis, MN",
-    //         date: "12/13/25",
-    //         time: "09:30",
-    //         requester: "Abdullah",
-    //         status: "Denied",
-    //         contact: ""
-    //     }, 
-    //     {
-    //         id: 3,
-    //         origin: "Decorah, IA",
-    //         destination: "New York, NY",
-    //         date: "11/03/25",
-    //         time: "19:30",
-    //         requester: "Hamza",
-    //         status: "Approved",
-    //         contact: "abdullah@luther.edu"
-    //     }
-    // ]);
 
     const approveReq = async (trip) => {
         if (!user) return;
@@ -218,7 +206,7 @@ export default function Trips() {
                 {trips.map(trip => (
                 <div className="col" key={trip.id}>
                     <div className="card shadow-sm"> 
-                        <img src={car} className="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
+                        <img src="/Car.png" className="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
                         <div className="card-body text-center"> 
                             <p className="card-text fw-bold">
                                 {trip.origin}

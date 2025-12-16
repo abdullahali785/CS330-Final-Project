@@ -94,14 +94,12 @@ def submit_form():
     form = request.get_json()
     userId = form["userId"]
     origin = form["origin"]
-
     destination = form["destination"]
     date = form["date"]
     time = form["time"]
-
     seatsAvailable = form["seatsAvailable"]
     notes = form["notes"]
-    print(form,userId,origin,destination,date,time)
+
     #Create new form entry
     new_form = Forms(
         id=str(uuid.uuid4()),

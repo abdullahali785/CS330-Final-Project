@@ -1,7 +1,4 @@
 // Landing page. Has a log in option. Takes to OAuth
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../Context/AuthContext";
-import tourists from "../Assets/Tourists.jpg";
 
 export default function Landing() {
     const handleSignIn = () => {
@@ -9,7 +6,7 @@ export default function Landing() {
     };
 
     return (
-    <div style={{backgroundImage: `url(${tourists})`, minHeight: "100vh", width: "100%", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", display: "flex", alignItems: "center", justifyContent: "center"}}>
+    <div style={{backgroundImage: `url(/Tourists.jpg)`, minHeight: "100vh", width: "100%", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", display: "flex", alignItems: "center", justifyContent: "center"}}>
     <div className="container">
         <div className="row p-5 pe-lg-0 pt-lg-5 align-items-center rounded-3 shadow-lg " style={{ transform: "translateY(-100px)" }}>
             <div className="col-lg-7 p-3 p-lg-5 pt-lg-3">
