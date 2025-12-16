@@ -6,12 +6,6 @@ import tourists from "../Assets/Tourists.jpg";
 export default function Landing() {
     const handleSignIn = () => {
         window.location.href = "https://cs330-final-project.onrender.com/auth/login";
-        
-        // const { user, loading } = useAuth();
-        // if (loading) return null;
-        // if (user) {
-        //     return <Navigate to="/redirect" replace/>;
-        // }
     };
 
     return (

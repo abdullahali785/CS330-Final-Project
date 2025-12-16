@@ -1,26 +1,15 @@
 // Main page with all the cards 
 import Header from "./Header";
 import car from "../Assets/Car.png";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useAuth } from "../Context/AuthContext";
 
 export default function Home() {
-    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
-
-    // const { user } = useAuth();
-    // const user = fetch(`${BASE_URL}me`)
-    //     .then(response => response.json())
-    //     .then(user => {
-    //         console.log(user);
-    //     })
-    //     .catch(error => console.error(error));
-
-    // if (user.hasCar === null) {
-    //     return null; // AuthRedirect will handle navigation
-    // }
-
-    // const [trips, setTrips] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
+    const { user , setUser } = useAuth();
+    const [trips, setTrips] = useState([]);
+    // const [loading, setLoading] = useState(true);
     const [requestedTrips, setRequestedTrips] = useState(new Set());
 
     useEffect(() => {
@@ -32,47 +21,47 @@ export default function Home() {
         .then(res => res.json())
         .then(data => {
             setTrips(data);
-            setLoading(false);
+            // setLoading(false);
         })
         .catch(err => {
             console.error("Failed to fetch trips", err);
-            setLoading(false);
+            // setLoading(false);
         });
     }, [user]);
 
     // !!! Replace with fetch from /forms once backend ready !!!
-    const [trips, setTrips] = useState([
-    { // All of this comes from DB
-        id: 1,
-        creatorId: 1, 
-        origin: "Decorah, IA",
-        destination: "Rochester, MN",
-        date: "12/01/25",
-        time: "17:00",
-        seatsAvaiable: 1,
-        notes: "No pets allowed"
-    },
-    {
-        id: 2,
-        creatorId: 2,
-        origin: "Decorah, IA",
-        destination: "New York, NY",
-        date: "12/29/25",
-        time: "17:00",
-        seatsAvaiable: 2,
-        notes: "Please bring snacks"
-    }, 
-    {
-        id: 3,
-        creatorId: 3,
-        origin: "Decorah, IA",
-        destination: "Los Angeles, CA",
-        date: "12/12/25",
-        time: "17:00",
-        seatsAvaiable: 3,
-        notes: ""
-    }
-    ]);
+    // const [trips, setTrips] = useState([
+    // { // All of this comes from DB
+    //     id: 1,
+    //     creatorId: 1, 
+    //     origin: "Decorah, IA",
+    //     destination: "Rochester, MN",
+    //     date: "12/01/25",
+    //     time: "17:00",
+    //     seatsAvaiable: 1,
+    //     notes: "No pets allowed"
+    // },
+    // {
+    //     id: 2,
+    //     creatorId: 2,
+    //     origin: "Decorah, IA",
+    //     destination: "New York, NY",
+    //     date: "12/29/25",
+    //     time: "17:00",
+    //     seatsAvaiable: 2,
+    //     notes: "Please bring snacks"
+    // }, 
+    // {
+    //     id: 3,
+    //     creatorId: 3,
+    //     origin: "Decorah, IA",
+    //     destination: "Los Angeles, CA",
+    //     date: "12/12/25",
+    //     time: "17:00",
+    //     seatsAvaiable: 3,
+    //     notes: ""
+    // }
+    // ]);
 
     const sendData = async (trip) => {
         if (
@@ -117,7 +106,7 @@ export default function Home() {
     //     );
     // }
 
-    // // No trips State
+    // No trips State
     // if (trips.length === 0) {
     //     return (
     //     <div>
@@ -154,7 +143,7 @@ export default function Home() {
                             </p>
 
                             <div className="d-flex justify-content-center gap-4">
-                                <p className="card-text md-0">Seats: {trip.seatsAvaiable ?? 0}</p>
+                                <p className="card-text md-0">Seats: {trip.seatsAvailable ?? 0}</p>
                                 {trip.notes && trip.notes !== "None" ? (<p className="card-text mb-0">Notes: {trip.notes}</p>) : (<p className="card-text mb-0">No special requirements</p>)}
                             </div>
 

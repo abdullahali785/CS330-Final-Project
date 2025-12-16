@@ -1,18 +1,15 @@
 // Takes user info (do you have a car or no etc)
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import tourists from "../Assets/Tourists.jpg"
 import { useAuth } from "../Context/AuthContext";
+import { useState } from "react";
 
 export default function Info() {
-    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
+    const navigate = useNavigate();
 
-    // const { user, setUser } = useAuth();
-    const user = fetch(`${BASE_URL}me`)
-        .then(response => response.json())
-        .then(user => {
-            console.log(user);
-        })
-        .catch(error => console.error(error));
+    const { user, setUser } = useAuth();
 
     const handleChoice = async (hasCar) => {
         try {
@@ -26,7 +23,8 @@ export default function Info() {
                 }),
             });
             // Update auth state
-            // setUser(prev => ({...prev, hasCar}));
+            setUser(prev => ({...prev, hasCar}));
+            navigate("/home");
         } catch (err) {
             console.error("Failed to update hasCar", err);
         }

@@ -12,10 +12,14 @@ export default function App() {
     <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/redirect" element={<AuthRedirect />} />
-        <Route path="/info" element={<ProtectedRoute> <Info /> </ProtectedRoute>}/>
+        {/* <Route path="/info" element={<ProtectedRoute> <Info /> </ProtectedRoute>}/>
         <Route path="/home" element={<ProtectedRoute> <Home /> </ProtectedRoute>}/>
         <Route path="/add" element={<ProtectedRoute> <Add /> </ProtectedRoute>}/>
-        <Route path="/trips" element={<ProtectedRoute> <Trips /> </ProtectedRoute>}/>
+        <Route path="/trips" element={<ProtectedRoute> <Trips /> </ProtectedRoute>}/> */}
+        <Route path="/info" element={<Info /> }/>
+        <Route path="/home" element={<Home /> }/>
+        <Route path="/add" element={ <Add /> }/>
+        <Route path="/trips" element={<Trips /> }/>
     </Routes>
     );
 }

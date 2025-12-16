@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import { useEffect } from "react";
 export default function ProtectedRoute({ children }) {
-  const { user, setUser, loading,setLoading } = useAuth();
+  const { user, setUser, loading, setLoading } = useAuth();
   // Still checking auth
   // if (loading) return null;
   
@@ -11,9 +11,7 @@ export default function ProtectedRoute({ children }) {
 
         async function loadUser() {
         try {
-            const res = await fetch("https://codec.luther.edu:5000/api/v1/me", {
-                credentials: "include"
-            });
+            const res = window.location.href = "https://cs330-final-project.onrender.com/api/v1/me";
             console.log(res)
 
             // if (!res.ok) {

@@ -3,21 +3,40 @@ import { useState } from "react";
 import Header from "./Header.jsx";
 import car from "../Assets/Car.png";
 import { useAuth } from "../Context/AuthContext";
+import { useEffect } from "react";
 
 export default function Trips() {
-    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
+    const { user , setUser } = useAuth()
+    const [form, setForm] = useState({})
 
-    const { user } = useAuth();
     if (!user) return null;
     const hasCar = user.hasCar === true;
 
-    // const [trips, setTrips] = useState([]);
-    // useEffect(() => {
-    //     fetch(`${BASE_URL}allRequests`) // API URL to get all trips
-    //     .then(res => res.json())
-    //     .then(data => setTrips(data))
-    //     .catch(err => console.error(err));
-    // }, []);
+    useEffect(()=>{
+        if (!user) return null;
+
+        if (user.hasCar) {
+            setForm({ creatorId:user.id })
+        } else{
+            setForm({ requestorId:user.id })
+        }
+    }, [user])
+    
+    const [trips, setTrips] = useState([]);
+    useEffect(() => {
+        fetch(`${BASE_URL}allRequests`,{
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(form)
+        }) 
+
+        .then(res =>{ console.log(res.json())
+            return res.json()})
+        .then(data => setTrips(data))
+        .catch(err => console.error(err));
+    }, [form]);
 
     // Data we get from allRequests
     // {
@@ -55,38 +74,38 @@ export default function Trips() {
     //     request.status
     // }
 
-    const [trips, setTrips] = useState([
-        {
-            id: 1,
-            origin: "Decorah, IA",
-            destination: "Rochester, MN",
-            date: "12/19/25",
-            time: "17:00",
-            requester: "Talha",
-            status: "Waiting",
-            contact: ""
-        },
-        {
-            id: 2,
-            origin: "Decorah, IA",
-            destination: "Minneapolis, MN",
-            date: "12/13/25",
-            time: "09:30",
-            requester: "Abdullah",
-            status: "Denied",
-            contact: ""
-        }, 
-        {
-            id: 3,
-            origin: "Decorah, IA",
-            destination: "New York, NY",
-            date: "11/03/25",
-            time: "19:30",
-            requester: "Hamza",
-            status: "Approved",
-            contact: "abdullah@luther.edu"
-        }
-    ]);
+    // const [trips, setTrips] = useState([
+    //     {
+    //         id: 1,
+    //         origin: "Decorah, IA",
+    //         destination: "Rochester, MN",
+    //         date: "12/19/25",
+    //         time: "17:00",
+    //         requester: "Talha",
+    //         status: "Waiting",
+    //         contact: ""
+    //     },
+    //     {
+    //         id: 2,
+    //         origin: "Decorah, IA",
+    //         destination: "Minneapolis, MN",
+    //         date: "12/13/25",
+    //         time: "09:30",
+    //         requester: "Abdullah",
+    //         status: "Denied",
+    //         contact: ""
+    //     }, 
+    //     {
+    //         id: 3,
+    //         origin: "Decorah, IA",
+    //         destination: "New York, NY",
+    //         date: "11/03/25",
+    //         time: "19:30",
+    //         requester: "Hamza",
+    //         status: "Approved",
+    //         contact: "abdullah@luther.edu"
+    //     }
+    // ]);
 
     const approveReq = async (trip) => {
         if (!user) return;

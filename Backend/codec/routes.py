@@ -117,9 +117,10 @@ def submit_form():
     return json.dumps({"message": "Form submitted successfully"}), 200
 
 
-@main.route('/allRequests', methods=['GET'])
+@main.route('/allRequests', methods=['POST'])
 def all_requests():
-    form = request.get_json()
+    form = request.get_json()   
+    print("form",form)
     creatorId = form["creatorId"] if "creatorId" in form else None
     requestorId = form["requestorId"] if "requestorId" in form else None
     #Get all requests for forms created by the given creatorId or requestorId else return error
@@ -135,6 +136,7 @@ def all_requests():
         for req in requests
     ]
     return json.dumps(requests_data), 200
+
 
 @main.route('/requestToJoin', methods=['POST'])
 def requests():
