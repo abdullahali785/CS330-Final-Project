@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import Header from "./Header";
+import { useAuth } from "../Context/AuthContext";
 
 export default function Add() {
-    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
+    const { user , setUser } = useAuth();
+
     const [form, setForm] = useState({
-        userId: 1,
+        userId: user.id,
         origin: "",
         destination: "",
         date: "",
@@ -51,7 +55,7 @@ export default function Add() {
         if (!isValid) return;
 
         const trip = {
-            userId: 1, // This will change later to actual car owner's ID
+            userId: user.id, // This will change later to actual car owner's ID
             origin: form.origin.trim(),
             destination: form.destination.trim(),
             date: form.date,
@@ -66,10 +70,11 @@ export default function Add() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(trip)
             });
+            console.log(res.json())
 
-            if (!res.ok) {
-                throw new Error("Failed to create trip");
-            }
+            // if (!res.ok) {
+            //     throw new Error("Failed to create trip");
+            // }
             console.log("Trip created:", trip);
 
             // Reset form
