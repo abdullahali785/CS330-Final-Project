@@ -1,6 +1,7 @@
 import pathlib
 import dotenv
 from flask import Flask
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import requests
@@ -52,11 +53,13 @@ def create_app():
 
     # Create tables
     with app.app_context():
-        Base.metadata.create_all(bind=db.engine)
-        
+        Base.metadata.create_all(bind=db.engine)    
 
     with app.app_context():
         mm.init_app(app)
+
+    with app.app_context():
+        CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
 
     # Register blueprints
     app.register_blueprint(auth)
