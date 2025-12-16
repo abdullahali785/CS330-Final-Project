@@ -43,7 +43,6 @@ export default function Trips() {
         })
         .then(data => {
             console.log("trips:", data);
-            
             setRequests(data);
         })
         .catch(err => console.error(err));
@@ -89,22 +88,7 @@ export default function Trips() {
             fetchTripDetails();
             
     }, [requests]);
-    // Data we get from allRequests
-    // {
-    //     id
-    //     requestorId
-    //     formId
-    //     status
-    // }
-
-    // Get trip data 
-    // {
-    //     id
-    //     origin
-    //     destination
-    //     date
-    //     time 
-    // }
+    
     useEffect(() => {
         if (!form.creatorId && !form.requestorId) return;
 
@@ -203,10 +187,10 @@ export default function Trips() {
             {/* Row Start */}
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
                 {/* Card Start */}
-                {trips.map(trip => (
+                {tripsmerged.map(trip => (
                 <div className="col" key={trip.id}>
                     <div className="card shadow-sm"> 
-                        <img src="/Car.png" className="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
+                        <img style={{backgroundImage: `url(/Car.png)`}} className="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
                         <div className="card-body text-center"> 
                             <p className="card-text fw-bold">
                                 {trip.origin}
@@ -215,7 +199,7 @@ export default function Trips() {
                             </p>
 
                             <div className="d-flex justify-content-center align-items-center"> 
-                                {/* <p className="text-body-secondary fw-bold">{formatDate(trip.date)}&nbsp;</p>  */}
+                                <p className="text-body-secondary fw-bold">{(trip.date)}&nbsp;</p> 
                                 <p className="text-body-secondary fw-bold">at {trip.time}</p> 
                             </div>  
 
@@ -232,7 +216,7 @@ export default function Trips() {
                                 </div>
                             </>) : (<>
                                 <div className="d-flex flex-column align-items-center">
-                                    {/* <p className={`fw-bold mb-1 ${getStatusClass(trip.status)}`}>Status: {trip.status}</p> */}
+                                    <p className={`fw-bold mb-1 ${getStatusClass(trip.status)}`}>Status: {trip.status}</p>
                                     {trip.status === "Approved"
                                         ? (<p className="fw-bold mb-0">Contact: {trip.contact}</p>) 
                                         : (<p className="fw-bold mb-0 invisible">Contact</p>)
@@ -269,10 +253,10 @@ export default function Trips() {
 //     return `${dayNum}${suffix} ${monthName}, ${date.getFullYear()}`;
 // }
 
-// function getStatusClass(status) {
-//     status = status.toLowerCase()
-//     if (status === "approved") return "text-success";
-//     if (status === "denied") return "text-danger";
+function getStatusClass(status) {
+    status = status.toLowerCase()
+    if (status === "approved") return "text-success";
+    if (status === "denied") return "text-danger";
     
-//     return "text-dark";
-// }
+    return "text-dark";
+}
