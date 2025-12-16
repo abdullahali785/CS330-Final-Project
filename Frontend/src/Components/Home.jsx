@@ -4,8 +4,8 @@ import { use, useEffect, useState } from "react";
 import { useAuth } from "../Context/AuthContext";
 
 export default function Home() {
-    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
-    // const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
+    // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
     const { user } = useAuth();
     const [trips, setTrips] = useState([]);
     const [requestedTrips, setRequestedTrips] = useState(new Set());
