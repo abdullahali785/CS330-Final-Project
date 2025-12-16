@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 export default function Header() {
     const navigate = useNavigate();
     const handleSignOut = () => {
-        window.location.href = "https://codec.luther.edu:5000/auth/logout";
+        window.location.href = "https://cs330-final-project.onrender.com/auth/logout";
     };
 
     return (

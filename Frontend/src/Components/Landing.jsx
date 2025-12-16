@@ -5,7 +5,7 @@ import tourists from "../Assets/Tourists.jpg";
 
 export default function Landing() {
     const handleSignIn = () => {
-        window.location.href = "https://codec.luther.edu:5000/auth/login";
+        window.location.href = "https://cs330-final-project.onrender.com/auth/login";
         
         const { user, loading } = useAuth();
         if (loading) return null;

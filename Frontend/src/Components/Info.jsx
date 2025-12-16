@@ -4,7 +4,7 @@ import tourists from "../Assets/Tourists.jpg"
 import { useAuth } from "../Context/AuthContext";
 
 export default function Info() {
-    const BASE_URL = "http://localhost:5000/api/v1/";
+    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
     const { user, setUser } = useAuth();
 
     const handleChoice = async (hasCar) => {

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "./Header";
 
 export default function Add() {
-    const BASE_URL = "http://localhost:8080/api/v1/";
+    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
     const [form, setForm] = useState({
         userId: 1,
         origin: "",
