@@ -1,7 +1,6 @@
 // Takes user info (do you have a car or no etc)
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import tourists from "@Assets/Tourists.jpg";
 
 export default function Info() {
     const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
@@ -28,7 +27,7 @@ export default function Info() {
             console.error("Failed to update hasCar", err);
         }
     };
-    const backgroundUrl = tourists;
+    const backgroundUrl = "/Tourists.jpg";
 
     return (
     <div style={{backgroundImage: `url(${backgroundUrl})`, minHeight: "100vh", width: "100%", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", display: "flex", alignItems: "center", justifyContent: "center"}}>

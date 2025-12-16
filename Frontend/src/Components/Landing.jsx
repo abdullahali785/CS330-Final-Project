@@ -1,11 +1,10 @@
 // Landing page. Has a log in option. Takes to OAuth
-import tourists from "@Assets/Tourists.jpg";
 
 export default function Landing() {
     const handleSignIn = () => {
         window.location.href = "https://cs330-final-project.onrender.com/auth/login";
     };
-    const backgroundUrl = tourists;
+    const backgroundUrl = "/Tourists.jpg"; 
 
     return (
     <div style={{backgroundImage: `url(${backgroundUrl})`, minHeight: "100vh", width: "100%", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", display: "flex", alignItems: "center", justifyContent: "center"}}>
