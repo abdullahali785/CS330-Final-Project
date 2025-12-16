@@ -1,7 +1,7 @@
 // Landing page. Has a log in option. Takes to OAuth
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import tourists from "../Assets/Tourists.jpg";
+import tourists from "@Assets/Tourists.jpg";
 
 export default function Landing() {
     const handleSignIn = () => {

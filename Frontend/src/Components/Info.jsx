@@ -1,6 +1,6 @@
 // Takes user info (do you have a car or no etc)
 import { Navigate, useNavigate } from "react-router-dom";
-import tourists from "../Assets/Tourists.jpg"
+import tourists from "@Assets/Tourists.jpg";
 import { useAuth } from "../Context/AuthContext";
 import { useState } from "react";
 

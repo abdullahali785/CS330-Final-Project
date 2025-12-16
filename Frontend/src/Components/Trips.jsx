@@ -1,7 +1,7 @@
 // Takes user info (do you have a car or no etc)
 import { useState } from "react";
 import Header from "./Header.jsx";
-import car from "../Assets/Car.png";
+import car from "@Assets/Car.jpg";
 import { useAuth } from "../Context/AuthContext";
 import { useEffect } from "react";
 

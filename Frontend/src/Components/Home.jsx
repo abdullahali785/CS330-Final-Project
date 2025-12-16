@@ -1,6 +1,6 @@
 // Main page with all the cards 
 import Header from "./Header";
-import car from "../Assets/Car.png";
+import car from "@Assets/Car.jpg";
 import { use, useEffect, useState } from "react";
 import { useAuth } from "../Context/AuthContext";
 
