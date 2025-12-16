@@ -20,7 +20,7 @@ export default function Header() {
                 </li>
 
                 <li className="nav-item">
-                    <button className="nav-link fw-bold" onClick={() => navigate("/trips")}>Trips</button>
+                    <button className="nav-link fw-bold" onClick={() => navigate("/trips")}>Requests</button>
                 </li>
 
                 <li className="nav-item">

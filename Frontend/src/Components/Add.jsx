@@ -75,7 +75,7 @@ export default function Add() {
         } catch (err) {
             console.error(err);
         }finally{
-            window.location.reload()
+            window.location.href = "https://cs330-final-project-m34n.onrender.com/home"
         }
     };
     const showInvalid = (field) => Boolean((touched[field] || submitAttempted) && errors[field]);
