@@ -6,18 +6,25 @@ import { useAuth } from "../Context/AuthContext";
 
 export default function Home() {
     const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
-    const { user } = useAuth();
 
-    if (user?.hasCar === null) {
-        return null; // AuthRedirect will handle navigation
-    }
+    // const { user } = useAuth();
+    // const user = fetch(`${BASE_URL}me`)
+    //     .then(response => response.json())
+    //     .then(user => {
+    //         console.log(user);
+    //     })
+    //     .catch(error => console.error(error));
 
-    const [trips, setTrips] = useState([]);
+    // if (user.hasCar === null) {
+    //     return null; // AuthRedirect will handle navigation
+    // }
+
+    // const [trips, setTrips] = useState([]);
     const [loading, setLoading] = useState(true);
     const [requestedTrips, setRequestedTrips] = useState(new Set());
 
     useEffect(() => {
-        if (!user) return;
+        // if (!user) return;
 
         fetch(`${BASE_URL}forms`, {
             credentials: "include"
@@ -34,38 +41,38 @@ export default function Home() {
     }, [user]);
 
     // !!! Replace with fetch from /forms once backend ready !!!
-    // const [trips, setTrips] = useState([
-    // { // All of this comes from DB
-    //     id: 1,
-    //     creatorId: 1, 
-    //     origin: "Decorah, IA",
-    //     destination: "Rochester, MN",
-    //     date: "12/01/25",
-    //     time: "17:00",
-    //     seatsAvaiable: 1,
-    //     notes: "No pets allowed"
-    // },
-    // {
-    //     id: 2,
-    //     creatorId: 2,
-    //     origin: "Decorah, IA",
-    //     destination: "New York, NY",
-    //     date: "12/29/25",
-    //     time: "17:00",
-    //     seatsAvaiable: 2,
-    //     notes: "Please bring snacks"
-    // }, 
-    // {
-    //     id: 3,
-    //     creatorId: 3,
-    //     origin: "Decorah, IA",
-    //     destination: "Los Angeles, CA",
-    //     date: "12/12/25",
-    //     time: "17:00",
-    //     seatsAvaiable: 3,
-    //     notes: ""
-    // }
-    // ]);
+    const [trips, setTrips] = useState([
+    { // All of this comes from DB
+        id: 1,
+        creatorId: 1, 
+        origin: "Decorah, IA",
+        destination: "Rochester, MN",
+        date: "12/01/25",
+        time: "17:00",
+        seatsAvaiable: 1,
+        notes: "No pets allowed"
+    },
+    {
+        id: 2,
+        creatorId: 2,
+        origin: "Decorah, IA",
+        destination: "New York, NY",
+        date: "12/29/25",
+        time: "17:00",
+        seatsAvaiable: 2,
+        notes: "Please bring snacks"
+    }, 
+    {
+        id: 3,
+        creatorId: 3,
+        origin: "Decorah, IA",
+        destination: "Los Angeles, CA",
+        date: "12/12/25",
+        time: "17:00",
+        seatsAvaiable: 3,
+        notes: ""
+    }
+    ]);
 
     const sendData = async (trip) => {
         if (
@@ -95,36 +102,36 @@ export default function Home() {
     
 
     // Loading State
-    if (loading) {
-        return (
-        <div>
-        <Header />
-        <div className="album py-5"> 
-            <div className="container"> 
-                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
-                    <p>Loading trips...</p>
-                </div> 
-            </div> 
-        </div>
-        </div>
-        );
-    }
+    // if (loading) {
+    //     return (
+    //     <div>
+    //     <Header />
+    //     <div className="album py-5"> 
+    //         <div className="container"> 
+    //             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
+    //                 <p>Loading trips...</p>
+    //             </div> 
+    //         </div> 
+    //     </div>
+    //     </div>
+    //     );
+    // }
 
-    // No trips State
-    if (trips.length === 0) {
-        return (
-        <div>
-        <Header />
-        <div className="album py-5"> 
-            <div className="container"> 
-                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
-                    <p>No trips to show</p>
-                </div> 
-            </div> 
-        </div>
-        </div>
-        );
-    }
+    // // No trips State
+    // if (trips.length === 0) {
+    //     return (
+    //     <div>
+    //     <Header />
+    //     <div className="album py-5"> 
+    //         <div className="container"> 
+    //             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
+    //                 <p>No trips to show</p>
+    //             </div> 
+    //         </div> 
+    //     </div>
+    //     </div>
+    //     );
+    // }
 
     // Normal State
     return (

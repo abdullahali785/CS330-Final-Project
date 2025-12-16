@@ -5,7 +5,14 @@ import { useAuth } from "../Context/AuthContext";
 
 export default function Info() {
     const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
-    const { user, setUser } = useAuth();
+
+    // const { user, setUser } = useAuth();
+    const user = fetch(`${BASE_URL}me`)
+        .then(response => response.json())
+        .then(user => {
+            console.log(user);
+        })
+        .catch(error => console.error(error));
 
     const handleChoice = async (hasCar) => {
         try {
@@ -19,7 +26,7 @@ export default function Info() {
                 }),
             });
             // Update auth state
-            setUser(prev => ({...prev, hasCar}));
+            // setUser(prev => ({...prev, hasCar}));
         } catch (err) {
             console.error("Failed to update hasCar", err);
         }

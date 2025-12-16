@@ -5,46 +5,7 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        async function loadUser() {
-        try {
-            const res = await fetch("https://cs330-final-project.onrender.com/api/v1/me", {
-                credentials: "include"
-            });
-
-            if (!res.ok) {
-                setUser(null);
-                return;
-            }
-            const data = await res.json();
-
-            // Normalize user object
-            if (!data || !data.id) {
-                setUser(null);
-                return;
-            }
-
-            setUser({
-                id: data.id,
-                name: data.name,
-                email: data.email,
-                hasCar:
-                    data.hasCar === true
-                    ? true
-                    : data.hasCar === false
-                    ? false
-                    : null
-            });
-        } catch (err) {
-            console.error("Auth load failed", err);
-            setUser(null);
-        } finally {
-            setLoading(false);
-        }
-        }
-
-        loadUser();
-    }, []);
+    
 
     const logout = () => {
         setUser(null);
