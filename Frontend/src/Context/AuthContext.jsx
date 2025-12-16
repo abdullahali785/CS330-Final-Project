@@ -64,4 +64,4 @@ export function AuthProvider({ children }) {
             throw new Error("useAuth must be used inside AuthProvider");
         }
         return ctx;
-    }
+}

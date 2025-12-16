@@ -2,9 +2,15 @@
 import { useState } from "react";
 import Header from "./Header.jsx";
 import car from "../Assets/Car.png";
+import { useAuth } from "../Context/AuthContext";
 
 export default function Trips() {
     const BASE_URL = "http://localhost:5000/api/v1/";
+
+    const { user } = useAuth();
+    if (!user) return null;
+    const hasCar = user.hasCar === true;
+
     // const [trips, setTrips] = useState([]);
     // useEffect(() => {
     //     fetch(`${BASE_URL}allRequests`) // API URL to get all trips
@@ -49,7 +55,6 @@ export default function Trips() {
     //     request.status
     // }
 
-    let hasCar = false;
     const [trips, setTrips] = useState([
         {
             id: 1,
@@ -83,32 +88,51 @@ export default function Trips() {
         }
     ]);
 
-    const approveReq = (trip) => {
-        const creatorId = 1; // Get creatorId from 1) OAuth information 2) Landing or Info page 
-        const data = {
-            tripId: trip.id,
-            creatorId
-        };
+    const approveReq = async (trip) => {
+        if (!user) return;
+        const data = {tripId: trip.id, creatorId: user.id};
 
-        fetch(`${BASE_URL}acceptRequest`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
+        try {
+            await fetch(`${BASE_URL}acceptRequest`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(data)
+            });
+            setTrips(prev =>
+                prev.map(t =>
+                    t.id === trip.id
+                    ? { ...t, status: "Approved", contact: trip.contact || user.email }
+                    : t
+                )
+            );
+        } catch (err) {
+            console.error("Failed to approve request", err);
+        }
     };
 
-    const denyReq = (trip) => {
-        const creatorId = 1; // Get creatorId from 1) OAuth information 2) Landing or Info page 
-        const data = {
-            tripId: trip.id,
-            creatorId
-        };
+    const denyReq = async (trip) => {
+        if (!user) return;
+        const data = {tripId: trip.id, creatorId: user.id};
 
-        fetch(`${BASE_URL}denyRequest`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
+        try {
+            await fetch(`${BASE_URL}denyRequest`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(data)
+            });
+
+            setTrips(prev =>
+                prev.map(t =>
+                    t.id === trip.id
+                    ? { ...t, status: "Denied" }
+                    : t
+                )
+            );
+        } catch (err) {
+            console.error("Failed to deny request", err);
+        }
     };
 
     return (
@@ -121,7 +145,7 @@ export default function Trips() {
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
                 {/* Card Start */}
                 {trips.map(trip => (
-                <div className="col"> 
+                <div className="col" key={trip.id}>
                     <div className="card shadow-sm"> 
                         <img src={car} className="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
                         <div className="card-body text-center"> 
@@ -143,8 +167,8 @@ export default function Trips() {
                                 
                                 <div className="d-flex justify-content-center align-items-center"> 
                                     <div className="btn-group gap-3"> 
-                                        <button type="button" onClick={() => approveReq(trip)} className="btn btn-success rounded-3 fw-bold">Approve</button>
-                                        <button type="button" onClick={() => denyReq(trip)} className="btn btn-danger rounded-3 fw-bold">Deny</button>
+                                        <button type="button" onClick={() => approveReq(trip)} className="btn btn-success rounded-3 fw-bold" disabled={trip.status !== "Waiting"}>Approve</button>
+                                        <button type="button" onClick={() => denyReq(trip)} className="btn btn-danger rounded-3 fw-bold" disabled={trip.status !== "Waiting"}>Deny</button>
                                     </div> 
                                 </div>
                             </>) : (<>
