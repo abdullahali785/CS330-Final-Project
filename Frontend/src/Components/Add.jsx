@@ -55,7 +55,7 @@ export default function Add() {
         if (!isValid) return;
 
         const trip = {
-            userId: user.id, // This will change later to actual car owner's ID
+            userId: user.id, 
             origin: form.origin.trim(),
             destination: form.destination.trim(),
             date: form.date,
@@ -71,28 +71,8 @@ export default function Add() {
                 body: JSON.stringify(trip),
                 credentials: "include"
             });
-            console.log(res.json())
-
-            // if (!res.ok) {
-            //     throw new Error("Failed to create trip");
-            // }
-            console.log("Trip created:", trip);
-
-            // Reset form
-            // setForm({
-            //     origin: "",
-            //     destination: "",
-            //     date: "",
-            //     time: "",
-            //     seatsAvailable: 1,
-            //     notes: ""
-            // });
-            // setSubmitAttempted(false);
-            // setTouched({});
-
         } catch (err) {
             console.error(err);
-            // alert("Could not create trip. Please try again.");
         }
     };
     const showInvalid = (field) => Boolean((touched[field] || submitAttempted) && errors[field]);
