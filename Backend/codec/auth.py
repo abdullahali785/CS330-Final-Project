@@ -90,6 +90,7 @@ def callback():
         # User.create(unique_id, users_name, users_email, picture)
         db.session.add(user)
         db.session.commit()
+        login_user(user)
         return redirect(frontend_url+ "info")
     # Begin user session by logging the user in
     login_user(user)

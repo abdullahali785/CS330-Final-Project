@@ -11,7 +11,7 @@ export default function ProtectedRoute({ children }) {
 
         async function loadUser() {
         try {
-            const res = await fetch("https://cs330-final-project.onrender.com/api/v1/me", {
+            const res = await fetch("https://codec.luther.edu:5000/api/v1/me", {
                 credentials: "include"
             });
             console.log(res)
