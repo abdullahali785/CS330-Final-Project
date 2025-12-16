@@ -62,6 +62,7 @@ def create_app():
     app.config.update(
     SESSION_COOKIE_SAMESITE="None",
     SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY = True
     )
     # Register blueprints
     app.register_blueprint(auth)
