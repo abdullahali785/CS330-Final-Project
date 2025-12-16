@@ -4,7 +4,8 @@ import Home from "./Home";
 import Trips from "./Trips";
 import Landing from "./Landing";
 import ProtectedRoute from "./ProtectedRoute";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AuthRedirect from "./AuthRedirect";
+import { Routes, Route } from "react-router-dom";
 
 export default function App() {
     return (

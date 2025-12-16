@@ -8,7 +8,7 @@ export function AuthProvider({ children }) {
     useEffect(() => {
         async function loadUser() {
         try {
-            const res = await fetch("https://codec.luther.edu:5000/auth/me", {
+            const res = await fetch("https://codec.luther.edu:5000/api/v1/me", {
                 credentials: "include"
             });
 
