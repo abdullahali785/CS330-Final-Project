@@ -6,8 +6,8 @@ import { useAuth } from "../Context/AuthContext";
 import { useEffect } from "react";
 
 export default function Trips() {
-    // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
-    const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
+    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    // const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
     const { user , setUser } = useAuth()
     const [form, setForm] = useState({})
 
@@ -26,17 +26,28 @@ export default function Trips() {
     
     const [trips, setTrips] = useState([]);
     useEffect(() => {
-        fetch(`${BASE_URL}allRequests`,{
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(form)
-        }) 
+        if (!form.creatorId && !form.requestorId) return;
 
-        .then(res =>{ console.log(res.json())
-            return res.json()})
-        .then(data => setTrips(data))
+        fetch(`${BASE_URL}allRequests`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(form),
+        })
+        // console.log(form)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}`);
+            }
+            return res.json();
+        })
+        .then(data => {
+            console.log("trips:", data);
+            setTrips(data);
+        })
         .catch(err => console.error(err));
     }, [form]);
+
 
     // Data we get from allRequests
     // {
