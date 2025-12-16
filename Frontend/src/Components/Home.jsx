@@ -8,49 +8,44 @@ export default function Home() {
     const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
     const { user } = useAuth();
     const [trips, setTrips] = useState([]);
-    const [form, setForm] = useState({})
-    const [reqTrips,setReqTrips] = useState({})
     const [requestedTrips, setRequestedTrips] = useState(new Set());
 
-     useEffect(()=>{
-
-        if (user && user.hasCar) {
-            setForm({ creatorId:user.id })
-        } else if(user && !user.hasCar){
-            setForm({ requestorId:user.id })
-        }
-    }, [user])
 
     useEffect(() => {
+        if(user){
+                const fetchTrips = async () => {
+            try {
+            const tripsRes = await fetch(`${BASE_URL}forms`, {
+                credentials: "include",
+            });
+            const tripsData = await tripsRes.json();
 
-        fetch(`${BASE_URL}forms`, {
-            credentials: "include",
-        })
-        .then(res => res.json())
-        .then(data => {
-            setTrips(data);
-        })
-        .catch(err => {
-            console.error("Failed to fetch trips", err);
-        });
+            if (user.hasCar) {
+                setTrips(tripsData);
+                return;
+            }
 
-        if(user && !user.hasCar){
-        fetch(`${BASE_URL}allRequests`, {
-            credentials: "include",
-            method:"POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(form)
-            
-        })
-        .then(res => res.json())
-        .then(data => {
-            const arry1 = new Set(data.map(trip=>trip.formId))
-            const difference = trips.filter(trip=>!arry1.has(trip.id))
-            setTrips(difference)
-        })
-        .catch(err => {
+            const reqRes = await fetch(`${BASE_URL}allRequests`, {
+                credentials: "include",
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ requestorId: user.id }),
+            });
+            const reqData = await reqRes.json();
+
+            const requestFormIds = new Set(reqData.map(r => r.formId));
+            const filteredTrips = tripsData.filter(
+                trip => !requestFormIds.has(trip.id)
+            );
+
+            setTrips(filteredTrips);
+            } catch (err) {
             console.error("Failed to fetch trips", err);
-        });}
+            }
+        };
+
+        fetchTrips();
+        }
     }, [user]);
 
     const sendData = async (trip) => {

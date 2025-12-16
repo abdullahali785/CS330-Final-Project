@@ -71,8 +71,11 @@ export default function Add() {
                 body: JSON.stringify(trip),
                 credentials: "include"
             });
+
         } catch (err) {
             console.error(err);
+        }finally{
+            window.location.reload()
         }
     };
     const showInvalid = (field) => Boolean((touched[field] || submitAttempted) && errors[field]);

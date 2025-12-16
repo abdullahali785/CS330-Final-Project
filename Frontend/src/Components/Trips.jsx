@@ -7,23 +7,21 @@ import { useEffect } from "react";
 export default function Trips() {
     // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
     const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
-    const { user , setUser } = useAuth()
-    const [form, setForm] = useState({})
+    const { user } = useAuth()
     const [requests,setRequests] = useState([])
     const [tripsmerged,setTripsmerged] = useState([])
 
-    useEffect(()=>{
-
-        if (user && user.hasCar) {
-            setForm({ creatorId:user.id })
-        } else if(user && !user.hasCar){
-            setForm({ requestorId:user.id })
-        }
-    }, [user])
+   
     
     const [trips, setTrips] = useState([]);
     useEffect(() => {
-        if(form){
+        if(user){
+            let form = {}
+            if(user.hasCar){
+                form["creatorId"]=user.id
+            }else{
+                form["requestorId"]=user.id
+            }
         fetch(`${BASE_URL}allRequests`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -38,12 +36,11 @@ export default function Trips() {
             return res.json();
         })
         .then(data => {
-            console.log("trips:", data);
             setRequests(data);
         })
         .catch(err => console.error(err));
         }
-    }, [form]);
+    }, [user]);
 
 
     useEffect(() => {
@@ -89,26 +86,6 @@ export default function Trips() {
             
     }, [requests]);
     
-    useEffect(() => {
-        fetch(`${BASE_URL}allRequests`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify(form),
-        })
-        // console.log(form)
-        .then(res => {
-            if (!res.ok) {
-                throw new Error(`HTTP ${res.status}`);
-            }
-            return res.json();
-        })
-        .then(data => {
-            console.log("trips:", data);
-            setTrips(data);
-        })
-        .catch(err => console.error(err));
-    }, [form]);
 
 
     const approveReq = async (trip) => {
@@ -129,6 +106,8 @@ export default function Trips() {
                     : t
                 )
             );
+            window.location.reload()
+
         } catch (err) {
             console.error("Failed to approve request", err);
         }
@@ -154,6 +133,8 @@ export default function Trips() {
                     : t
                 )
             );
+            //refresh window
+            window.location.reload()
         } catch (err) {
             console.error("Failed to deny request", err);
         }

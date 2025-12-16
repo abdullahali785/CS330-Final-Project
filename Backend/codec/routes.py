@@ -18,7 +18,6 @@ def info():
     form = request.get_json()
     user_id = form["userId"]
     has_car = form["hasCar"]
-    print(form)
     user = db.session.query(Users).filter(Users.id == user_id).first()
     if not user:
         return json.dumps({"error": "User not found"}), 404
@@ -29,9 +28,6 @@ def info():
 @main.route('/me', methods=['GET'])
 def user():
     if current_user.is_authenticated:
-        print(current_user.id)
-        print(current_user.email)
-        print(current_user.name)
         return json.dumps({
             "id": current_user.id,
             "email": current_user.email,
@@ -116,7 +112,6 @@ def submit_form():
     db.session.add(new_form)
     db.session.commit()
     flash("Form submitted successfully", "success")
-    print("Form submitted successfully")
     return json.dumps({"message": "Form submitted successfully"}), 200
 
 
@@ -124,13 +119,8 @@ def submit_form():
 @main.route('/allRequests', methods=['POST'])
 def all_requests():
     form = request.get_json()   
-    print("form",form)
     creatorId = form["creatorId"] if "creatorId" in form else None
     requestorId = form["requestorId"] if "requestorId" in form else None
-    #get requests and print
-    all_req = db.session.query(Requests).all()
-    for r in all_req:
-        print(r.id, r.requestorId, r.formId, r.status)
 
     #Get all requests for forms created by the given creatorId or requestorId else return error
     if requestorId is None and creatorId is not None:
@@ -170,7 +160,6 @@ def requests():
     db.session.add(new_request)
     db.session.commit()
     flash("Request to join submitted successfully", "success")
-    print("Request to join submitted successfully")
     return json.dumps({"message": "Request to join submitted successfully"}), 200
 
 @main.route('/acceptRequest', methods=['POST'])

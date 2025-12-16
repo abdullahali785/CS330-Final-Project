@@ -13,7 +13,6 @@ useEffect(() => {
       if(!user){
         async function loadUser() {
         try {
-            console.log(sessionStorage.getItem("userId"))
             const res = await fetch("https://codec.luther.edu:5000/api/v1/user", {
                 credentials: "include",
                 method: "POST",
@@ -23,7 +22,6 @@ useEffect(() => {
                 })
             });
             const data = await res.json();
-            console.log("data",data)
             // Normalize user object
             if (data.error) {
                 setUser(null);
