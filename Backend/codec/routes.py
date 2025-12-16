@@ -14,8 +14,9 @@ def home():
 @main.route('/info')
 def info():
     #confirm if you have a car and edit the user db
-    user_id = request.form["userId"]
-    has_car = request.form["hasCar"]
+    form = request.get_json()
+    user_id = form["userId"]
+    has_car = form["hasCar"]
     user = db.session.query(Users).filter(Users.id == user_id).first()
     if not user:
         return json.dumps({"error": "User not found"}), 404
@@ -26,7 +27,8 @@ def info():
 @main.route('/user', methods=['GET'])
 def user():
     #Get user info from the database
-    user_id = request.form["userId"]
+    form = request.get_json()
+    user_id = form["userId"]
     user = db.session.query(Users).filter(Users.id == user_id).first()
     if not user:
         return json.dumps({"error": "User not found"}), 404
@@ -46,7 +48,8 @@ def users():
 @main.route('/form', methods=['GET'])
 def form():
     #Get form info from the database
-    form_id = request.form["formId"]
+    form = request.get_json()
+    form_id = form["formId"]
     form = db.session.query(Forms).filter(Forms.id == form_id).first()
     if not form:
         return json.dumps({"error": "Form not found"}), 404
@@ -71,13 +74,14 @@ def submit_form():
         return json.dumps({"error": "Invalid request method"}), 400
     
     #Extract form data
-    userId = request.form["userId"]
-    origin = request.form["origin"]
-    destination = request.form["destination"]
-    date = request.form["date"]
-    time = request.form["time"]
-    seatsAvailable = request.form["seatsAvailable"]
-    notes = request.form["notes"]
+    form = request.get_json()
+    userId = form["userId"]
+    origin = form["origin"]
+    destination = form["destination"]
+    date = form["date"]
+    time = form["time"]
+    seatsAvailable = form["seatsAvailable"]
+    notes = form["notes"]
     
     #Create new form entry
     new_form = Forms(
@@ -100,8 +104,9 @@ def submit_form():
 
 @main.route('/allRequests', methods=['GET'])
 def all_requests():
-    creatorId = request.form["creatorId"] if "creatorId" in request.form else None
-    requestorId = request.form["requestorId"] if "requestorId" in request.form else None
+    form = request.get_json()
+    creatorId = form["creatorId"] if "creatorId" in form else None
+    requestorId = form["requestorId"] if "requestorId" in form else None
     #Get all requests for forms created by the given creatorId or requestorId else return error
     if requestorId is None and creatorId is not None:
         requests = db.session.query(Requests).join(Forms, Requests.formId == Forms.id).filter(Forms.creatorId == creatorId).all()
@@ -124,8 +129,9 @@ def requests():
         return json.dumps({"error": "Invalid request method"}), 400
     
     #Extract request data
-    requestorId = request.form["requestorId"]
-    formId = request.form["formId"]
+    form = request.get_json()
+    requestorId = form["requestorId"]
+    formId = form["formId"]
     
     #Create new request entry
     new_request = Requests(
@@ -150,8 +156,9 @@ def accept_request():
     
 
     #Extract request data
-    request_id = request.form['requestId']
-    creatorId = request.form['creatorId']
+    form = request.get_json()
+    request_id = form['requestId']
+    creatorId = form['creatorId']
     join_request = db.session.query(Requests).filter_by(id=request_id).first()
     
     form = db.session.query(Forms).filter_by(id=join_request.formId).first()
@@ -172,7 +179,8 @@ def accept_request():
 
 @main.route('/denyRequest', methods=['POST'])
 def deny_request():
-    request_id = request.form['requestId']
+    form = request.get_json()
+    request_id = form['requestId']
     join_request = db.session.query(Requests).filter_by(id=request_id).first()
     form = db.session.query(Forms).filter_by(id=join_request.formId).first()
     # Verify that the form belongs to the creator
