@@ -92,29 +92,34 @@ def submit_form():
     form = request.get_json()
     userId = form["userId"]
     origin = form["origin"]
+
     destination = form["destination"]
     date = form["date"]
     time = form["time"]
-    seatsAvailable = form["seatsAvailable"]
+
+    # seatsAvailable = form["seatsAvailable"]
     notes = form["notes"]
-    
-    #Create new form entry
-    new_form = Forms(
-        id=str(uuid.uuid4()),
-        creatorId=userId,
-        origin=origin,
-        destination=destination,
-        date=date,
-        time=time,
-        seatsAvailable=int(seatsAvailable),
-        notes=notes
-    )
-    # Save to database
-    db.session.add(new_form)
-    db.session.commit()
-    flash("Form submitted successfully", "success")
-    print("Form submitted successfully")
-    return json.dumps({"message": "Form submitted successfully"}), 200
+    print(form,userId,origin,destination,date,time)
+
+    # print(userId,seatsAvailable)
+    # #Create new form entry
+    # new_form = Forms(
+    #     id=str(uuid.uuid4()),
+    #     creatorId=userId,
+    #     origin=origin,
+    #     destination=destination,
+    #     date=date,
+    #     time=time,
+    #     seatsAvailable=int(seatsAvailable),
+    #     notes=notes
+    # )
+    # # Save to database
+    # db.session.add(new_form)
+    # db.session.commit()
+    # flash("Form submitted successfully", "success")
+    # print("Form submitted successfully")
+    # return json.dumps({"message": "Form submitted successfully"}), 200
+    return json.dumps({"mes":"ds"})
 
 
 @main.route('/allRequests', methods=['POST'])

@@ -3,8 +3,8 @@ import Header from "./Header";
 import { useAuth } from "../Context/AuthContext";
 
 export default function Add() {
-    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
-    // const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
+    // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
     const { user , setUser } = useAuth();
 
     const [form, setForm] = useState({
@@ -13,7 +13,7 @@ export default function Add() {
         destination: "",
         date: "",
         time: "",
-        seatsAvaiable: 1,
+        seatsAvailable: 1,
         notes: "",
     });
 
@@ -38,9 +38,9 @@ export default function Add() {
         if (!form.destination.trim()) errors.destination = "Destination is required.";
         if (!form.date) errors.date = "Departure date is required.";
         if (!form.time) errors.time = "Departure time is required.";
-        if (form.seatsAvaiable === "" || form.seatsAvaiable == null) errors.seatsAvaiable = "Number of people is required.";
-        else if (Number.isNaN(form.seatsAvaiable) || form.seatsAvaiable < 1 || form.seatsAvaiable > 7) {
-        errors.seatsAvaiable = "Must be a number between 1 and 7.";
+        if (form.seatsAvailable === "" || form.seatsAvailable == null) errors.seatsAvailable = "Number of people is required.";
+        else if (Number.isNaN(form.seatsAvailable) || form.seatsAvailable < 1 || form.seatsAvailable > 7) {
+        errors.seatsAvailable = "Must be a number between 1 and 7.";
         }
         return errors;
     };
@@ -60,7 +60,7 @@ export default function Add() {
             destination: form.destination.trim(),
             date: form.date,
             time: form.time,
-            seatsAvaiable: form.seatsAvaiable,
+            seatsAvailable: form.seatsAvailable,
             notes: form.notes.trim() || null
         };
 
@@ -68,7 +68,8 @@ export default function Add() {
             const res = await fetch(`${BASE_URL}submitForm`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(trip)
+                body: JSON.stringify(trip),
+                credentials: "include"
             });
             console.log(res.json())
 
@@ -78,20 +79,20 @@ export default function Add() {
             console.log("Trip created:", trip);
 
             // Reset form
-            setForm({
-                origin: "",
-                destination: "",
-                date: "",
-                time: "",
-                seatsAvaiable: 1,
-                notes: ""
-            });
-            setSubmitAttempted(false);
-            setTouched({});
+            // setForm({
+            //     origin: "",
+            //     destination: "",
+            //     date: "",
+            //     time: "",
+            //     seatsAvailable: 1,
+            //     notes: ""
+            // });
+            // setSubmitAttempted(false);
+            // setTouched({});
 
         } catch (err) {
             console.error(err);
-            alert("Could not create trip. Please try again.");
+            // alert("Could not create trip. Please try again.");
         }
     };
     const showInvalid = (field) => Boolean((touched[field] || submitAttempted) && errors[field]);
@@ -165,13 +166,13 @@ export default function Add() {
                 </div>
 
                 <div className="col-md-4">
-                    <label htmlFor="seatsAvaiable" className="form-label fw-bold">Number of people that can come</label>
+                    <label htmlFor="seatsAvailable" className="form-label fw-bold">Number of people that can come</label>
                     <input
-                        id="seatsAvaiable"
-                        name="seatsAvaiable"
+                        id="seatsAvailable"
+                        name="seatsAvailable"
                         type="number"
-                        className={`form-control ${showInvalid("seatsAvaiable") ? "is-invalid" : ""}`}
-                        value={form.seatsAvaiable}
+                        className={`form-control ${showInvalid("seatsAvailable") ? "is-invalid" : ""}`}
+                        value={form.seatsAvailable}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         min={1}
@@ -179,7 +180,7 @@ export default function Add() {
                         required
                         aria-describedby="seatsHelp"
                     />
-                    <div className="invalid-feedback">{errors.seatsAvaiable}</div>
+                    <div className="invalid-feedback">{errors.seatsAvailable}</div>
                     <div id="seatsHelp" className="form-text">Enter a number between 1 and 7.</div>
                 </div>
 
