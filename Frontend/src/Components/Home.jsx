@@ -53,7 +53,6 @@ export default function Home() {
             console.error("Failed to send request", err);
         }
     };
-    const backgroundUrl = "/Car.png";
 
     return (
     <div>
@@ -66,7 +65,7 @@ export default function Home() {
                 {trips.map(trip => (
                 <div className="col" key={trip.id}> 
                     <div className="card shadow-sm"> 
-                        <img style={{backgroundImage: `url(${backgroundUrl})`}} className="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
+                        <img src="/Car.jpg" className="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
                         <div className="card-body text-center"> 
                             <p className="card-text fw-bold">
                                 {trip.origin ?? "Decorah, IA"}

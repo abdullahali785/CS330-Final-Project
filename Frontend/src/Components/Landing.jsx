@@ -4,10 +4,9 @@ export default function Landing() {
     const handleSignIn = () => {
         window.location.href = "https://cs330-final-project.onrender.com/auth/login";
     };
-    const backgroundUrl = "/Tourists.jpg"; 
 
     return (
-    <div style={{backgroundImage: `url(${backgroundUrl})`, minHeight: "100vh", width: "100%", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", display: "flex", alignItems: "center", justifyContent: "center"}}>
+    <div style={{backgroundImage: `url(/Tourists.jpg)`, minHeight: "100vh", width: "100%", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", display: "flex", alignItems: "center", justifyContent: "center"}}>
     <div className="container">
         <div className="row p-5 pe-lg-0 pt-lg-5 align-items-center rounded-3 shadow-lg " style={{ transform: "translateY(-100px)" }}>
             <div className="col-lg-7 p-3 p-lg-5 pt-lg-3">
