@@ -7,7 +7,7 @@ export default function Landing() {
         
         if (loading) return null;
         if (user) {
-            return <Navigate to="/redirect" replace />;
+            return <Navigate to="/redirect" replace/>;
         }
         window.location.href = "https://codec.luther.edu:5000/auth/login";
     };

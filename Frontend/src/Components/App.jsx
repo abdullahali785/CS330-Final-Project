@@ -1,10 +1,10 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ProtectedRoute from "./ProtectedRoute";
-import Landing from "./Landing";
+import Add from "./Add";
 import Info from "./Info";
 import Home from "./Home";
-import Add from "./Add";
 import Trips from "./Trips";
+import Landing from "./Landing";
+import ProtectedRoute from "./ProtectedRoute";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default function App() {
     return (

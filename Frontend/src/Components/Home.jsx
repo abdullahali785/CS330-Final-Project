@@ -14,6 +14,7 @@ export default function Home() {
 
     const [trips, setTrips] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [requestedTrips, setRequestedTrips] = useState(new Set());
 
     useEffect(() => {
         if (!user) return;
@@ -66,21 +67,30 @@ export default function Home() {
     // }
     // ]);
 
-    const sendData = (trip) => {
-        if (!user) return;
+    const sendData = async (trip) => {
+        if (
+            !user ||
+            trip.creatorId === user.id ||
+            trip.seatsAvailable === 0 ||
+            requestedTrips.has(trip.id)
+        ) return;
 
         const data = {
-            requesterId: user.id, // Get requesterId from OAuth information
+            requesterId: user.id,
             tripId: trip.id
         };
-        console.log("Sending request:", data);
 
-        fetch(`${BASE_URL}requestToJoin`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify(data)
-        });
+        try {
+            await fetch(`${BASE_URL}requestToJoin`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(data)
+            });
+            setRequestedTrips(prev => new Set(prev).add(trip.id));
+        } catch (err) {
+            console.error("Failed to send request", err);
+        }
     };
     
 
@@ -148,7 +158,9 @@ export default function Home() {
                             
                             <div className="d-flex justify-content-center align-items-center"> 
                                 <div className="btn-group">
-                                    <button type="button" onClick={() => sendData(trip)} className="btn btn-success fw-bold">Request</button>
+                                    <button type="button" onClick={() => sendData(trip)} className="btn btn-success fw-bold" disabled={trip.creatorId === user.id || trip.seatsAvailable === 0 || requestedTrips.has(trip.id)}>
+                                        {requestedTrips.has(trip.id) ? "Requested" : trip.seatsAvailable === 0 ? "Full" : "Request"}
+                                    </button>
                                 </div> 
                             </div> 
                         </div> 
