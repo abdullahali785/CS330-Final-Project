@@ -3,6 +3,7 @@ import { useState } from "react";
 import Header from "./Header.jsx";
 import { useAuth } from "../Context/AuthContext";
 import { useEffect } from "react";
+import car from "@Assets/Car.png";
 
 export default function Trips() {
     const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
@@ -152,7 +153,7 @@ export default function Trips() {
             console.error("Failed to deny request", err);
         }
     };
-    const backgroundUrl = "/Car.jpg";
+    const backgroundUrl = car;
 
     return (
     // Car Owners' View

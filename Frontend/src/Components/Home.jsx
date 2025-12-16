@@ -2,6 +2,7 @@
 import Header from "./Header";
 import { use, useEffect, useState } from "react";
 import { useAuth } from "../Context/AuthContext";
+import car from "@Assets/Car.png";
 
 export default function Home() {
     const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
@@ -53,7 +54,7 @@ export default function Home() {
             console.error("Failed to send request", err);
         }
     };
-    const backgroundUrl = "/Car.jpg";
+    const backgroundUrl = car;
 
     return (
     <div>
