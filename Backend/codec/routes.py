@@ -38,6 +38,7 @@ def user():
             "hasCar": current_user.hasCar
         }), 200
     return json.dumps({"error": "User not authenticated"}), 401
+
 @main.route('/user', methods=['GET'])
 def get_user():
     #Get user info from the database

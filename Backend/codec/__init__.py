@@ -20,6 +20,7 @@ def create_app():
     from .routes import main
     from .auth import auth
     app = Flask(__name__)   
+    CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
 
     # Load .flaskenv
     project_root = pathlib.Path(__file__).parent.parent
@@ -58,9 +59,10 @@ def create_app():
     with app.app_context():
         mm.init_app(app)
 
-    with app.app_context():
-        CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
-
+    app.config.update(
+    SESSION_COOKIE_SAMESITE="None",
+    SESSION_COOKIE_SECURE=True,
+    )
     # Register blueprints
     app.register_blueprint(auth)
     app.register_blueprint(main)
