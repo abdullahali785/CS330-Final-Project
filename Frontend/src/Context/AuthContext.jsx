@@ -8,7 +8,7 @@ export function AuthProvider({ children }) {
     const logout = () => {
         setUser(null);
             // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
-            window.location.href = "https://codec.luther.edu:5000/auth/logout";
+            window.location.href = "https://cs330-final-project-m34n.onrender.com/auth/logout";
     };
 
     return (
