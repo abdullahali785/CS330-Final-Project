@@ -189,7 +189,8 @@ export default function Trips() {
                 {/* Card Start */}
                 {tripsmerged.map(trip => (
                 <div className="col" key={trip.id}>
-                    <div className="card shadow-sm" style={{height:"225px",width:"100%",backgroundImage:"url(/Car.png)",backgroundSize:"cover",backgroundPosition:"center",backgroundRepeat:"no-repeat"}}>
+                    <div className="card shadow-sm">
+                    <img src="/Car.png"></img>
                         <div className="card-body text-center"> 
                             <p className="card-text fw-bold">
                                 {trip.origin}

@@ -64,7 +64,8 @@ export default function Home() {
                 {/* Card Start */}
                 {trips.map(trip => (
                 <div className="col" key={trip.id}> 
-                    <div className="card shadow-sm" style={{height:"225px",width:"100%",backgroundImage:"url(/Car.jpg)",backgroundSize:"cover",backgroundPosition:"center",backgroundRepeat:"no-repeat"}}>
+                    <div className="card shadow-sm" >
+                        <img src="/Car.png"></img>
                         <div className="card-body text-center"> 
                             <p className="card-text fw-bold">
                                 {trip.origin ?? "Decorah, IA"}
