@@ -87,8 +87,8 @@ def callback():
     params = urlencode({
         "userId": user.id
     })
-    # frontend_url = "https://cs330-final-project-m34n.onrender.com/"
-    frontend_url = "http://localhost:5173"
+    frontend_url = "https://cs330-final-project-m34n.onrender.com/"
+    # frontend_url = "http://localhost:5173"
     # Doesn't exist? Add it to the database.
     if not db.session.query(User).filter(User.id==unique_id).first():
         # User.create(unique_id, users_name, users_email, picture)
@@ -111,7 +111,9 @@ def callback():
 def logout():
     """Log out"""
     logout_user()
-    frontend_url = current_app.config.get("FRONTEND_URL")
+    # frontend_url = current_app.config.get("FRONTEND_URL")
+    frontend_url = "https://cs330-final-project-m34n.onrender.com/"
+
 
     return redirect(frontend_url)
 
