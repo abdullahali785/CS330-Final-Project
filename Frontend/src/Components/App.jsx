@@ -18,6 +18,7 @@ export default function App() {
             <Route path="/add" element={ <Add /> }/>
             <Route path="/trips" element={ <Trips /> }/>
         </Route>
+        <Route path="*" element={<NotFound />} />
         {/* <Route path="/home" element={<ProtectedRoute> <Home /> </ProtectedRoute> }/>
         <Route path="/info" element={<ProtectedRoute> <Info /> </ProtectedRoute>}/>
         <Route path="/add" element={<ProtectedRoute> <Add /> </ProtectedRoute> }/>
