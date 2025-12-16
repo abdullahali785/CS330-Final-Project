@@ -3,8 +3,8 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 
 export default function Info() {
-    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
-    // const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
+    // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
     const navigate = useNavigate();
 
     const { user, setUser } = useAuth();
@@ -17,7 +17,7 @@ export default function Info() {
                 credentials: "include",
                 body: JSON.stringify({
                     userId: user.id,
-                    hasCar
+                    hasCar: ""+hasCar
                 }),
             });
             // Update auth state

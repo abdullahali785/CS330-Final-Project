@@ -12,12 +12,13 @@ main = Blueprint("main", __name__, url_prefix="/api/v1")
 def home():
     return json.dumps({"message": "Welcome to the Shuttlr API"}), 200
 
-@main.route('/info')
+@main.route('/info', methods=['POST'])
 def info():
     #confirm if you have a car and edit the user db
     form = request.get_json()
     user_id = form["userId"]
     has_car = form["hasCar"]
+    print(form)
     user = db.session.query(Users).filter(Users.id == user_id).first()
     if not user:
         return json.dumps({"error": "User not found"}), 404

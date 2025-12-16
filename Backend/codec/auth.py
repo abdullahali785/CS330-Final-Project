@@ -83,7 +83,7 @@ def callback():
     user = User(
         id=unique_id, name=users_name, email=users_email, hasCar=False
     )
-    frontend_url = current_app.config.get("FRONTEND_URL")
+    frontend_url = "https://cs330-final-project.onrender.com/"
 
     # Doesn't exist? Add it to the database.
     if not db.session.query(User).filter(User.id==unique_id).first():

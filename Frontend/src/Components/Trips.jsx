@@ -20,7 +20,7 @@ export default function Trips() {
         if (user.hasCar) {
             setForm({ creatorId:user.id })
         } else{
-            setForm({ creatorId:user.id })
+            setForm({ requestorId:user.id })
         }
     }, [user])
     
@@ -56,7 +56,7 @@ export default function Trips() {
             for(const req of requests){
                 console.log("Request:", req);
                 let tripData = await fetchData("form", { formId: req.formId });
-                let userData = await fetchData("user", { userId: "115613340079763044912" });
+                let userData = await fetchData("user", { userId: user.id });
 
                 let mergedData = {
                     id: req.id,
@@ -203,7 +203,7 @@ export default function Trips() {
             {/* Row Start */}
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
                 {/* Card Start */}
-                {trips.map(trip => (
+                {tripsmerged.map(trip => (
                 <div className="col" key={trip.id}>
                     <div className="card shadow-sm"> 
                         <img src="/Car.png" className="bd-placeholder-img card-img-top" height="225" preserveAspectRatio="xMidYMid slice" role="img" width="100%"></img> 
