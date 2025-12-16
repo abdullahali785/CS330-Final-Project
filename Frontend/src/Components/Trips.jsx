@@ -5,8 +5,8 @@ import { useAuth } from "../Context/AuthContext";
 import { useEffect } from "react";
 
 export default function Trips() {
-    // const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
-    const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
+    const BASE_URL = "https://cs330-final-project.onrender.com/api/v1/";
+    // const BASE_URL = "https://codec.luther.edu:5000/api/v1/";
     const { user , setUser } = useAuth()
     const [form, setForm] = useState({})
 
