@@ -85,39 +85,6 @@ export default function Trips() {
     //     request.status
     // }
 
-    // const [trips, setTrips] = useState([
-    //     {
-    //         id: 1,
-    //         origin: "Decorah, IA",
-    //         destination: "Rochester, MN",
-    //         date: "12/19/25",
-    //         time: "17:00",
-    //         requester: "Talha",
-    //         status: "Waiting",
-    //         contact: ""
-    //     },
-    //     {
-    //         id: 2,
-    //         origin: "Decorah, IA",
-    //         destination: "Minneapolis, MN",
-    //         date: "12/13/25",
-    //         time: "09:30",
-    //         requester: "Abdullah",
-    //         status: "Denied",
-    //         contact: ""
-    //     }, 
-    //     {
-    //         id: 3,
-    //         origin: "Decorah, IA",
-    //         destination: "New York, NY",
-    //         date: "11/03/25",
-    //         time: "19:30",
-    //         requester: "Hamza",
-    //         status: "Approved",
-    //         contact: "abdullah@luther.edu"
-    //     }
-    // ]);
-
     const approveReq = async (trip) => {
         if (!user) return;
         const data = {tripId: trip.id, creatorId: user.id};
