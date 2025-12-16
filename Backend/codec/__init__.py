@@ -20,7 +20,7 @@ def create_app():
     from .routes import main
     from .auth import auth
     app = Flask(__name__)   
-    CORS(app, origins=["http://localhost:5173", "https://codec.luther.edu",], supports_credentials=True)
+    CORS(app, origins=["http://localhost:5173", "https://codec.luther.edu","https://cs330-final-project.onrender.com"], supports_credentials=True)
 
     # Load .flaskenv
     project_root = pathlib.Path(__file__).parent.parent
